@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Admin Leaderboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f2027;
+color:white;
+text-align:center;
+}
+
+table{
+margin:auto;
+margin-top:40px;
+border-collapse:collapse;
+width:80%;
+}
+
+th,td{
+padding:12px;
+border:1px solid white;
+}
+
+th{
+background:#4CAF50;
+}
+
+button{
+background:red;
+color:white;
+border:none;
+padding:6px 12px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Quiz Leaderboard</h1>
+
+<table>
+
+<thead>
+<tr>
+<th>Rank</th>
+<th>Name</th>
+<th>Score</th>
+<th>Percentage</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="leaderboard"></tbody>
+
+</table>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBLpGMD_7UUSQSncFuvmf88rgt0TFbeWyw",
+authDomain: "quiz-engine-d36d9.firebaseapp.com",
+projectId: "quiz-engine-d36d9",
+storageBucket: "quiz-engine-d36d9.firebasestorage.app",
+messagingSenderId: "909409022499",
+appId: "1:909409022499:web:a527fb4b636035cfb83796"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadLeaderboard(){
+
+const querySnapshot = await getDocs(collection(db,"quizResults"));
+
+let results=[];
+
+querySnapshot.forEach((docSnap)=>{
+results.push({
+id: docSnap.id,
+...docSnap.data()
+});
+});
+
+results.sort((a,b)=>b.score-a.score);
+
+let table="";
+
+results.forEach((r,index)=>{
+
+table+=`
+<tr>
+<td>${index+1}</td>
+<td>${r.name}</td>
+<td>${r.score}/${r.total}</td>
+<td>${r.percentage}%</td>
+<td>${r.date}</td>
+<td>
+<button onclick="deleteRecord('${r.id}')">Delete</button>
+</td>
+</tr>
+`;
+
+});
+
+document.getElementById("leaderboard").innerHTML=table;
+
+}
+
+window.deleteRecord = async function(id){
+
+if(confirm("Delete this record?")){
+
+await deleteDoc(doc(db,"quizResults",id));
+
+alert("Record Deleted");
+
+location.reload();
+
+}
+
+}
+
+loadLeaderboard();
+
+</script>
+
+</body>
+
+</html>
