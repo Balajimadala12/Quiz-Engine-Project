@@ -9,7 +9,7 @@ An admin-specific feature is implemented to securely view the leaderboard of all
 
 ---
 
-🚀 **Live Demo**: https://quizenginefsad.netlify.app
+🚀 **Live Demo**: https://baluquizweb.netlify.app
 
 
 ## 🚀 Features
