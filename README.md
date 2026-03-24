@@ -44,5 +44,5 @@ An admin-specific feature is implemented to securely view the leaderboard of all
 ---
 
 ## 📷 Screenshots 
-<img width="1004" height="1600" alt="image" src="https://github.com/user-attachments/assets/02b7e6fa-0f9d-47ff-93d0-fb95a429ceb1" />
-<img width="1079" height="1532" alt="image" src="https://github.com/user-attachments/assets/1847b8de-3f71-4cd1-a9c6-a090dfca529a" />)
+<img width="1004" height="1600" alt="image" src="C:\Users\madal\OneDrive\Pictures\Screenshots\balu2.png" />
+<img width="1079" height="1532" alt="image" src= "C:\Users\madal\OneDrive\Pictures\Screenshots\balu1.png"/>)
