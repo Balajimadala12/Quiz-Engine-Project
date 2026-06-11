@@ -2,5 +2,6 @@ services:
   - type: web
     name: quiz-engine
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: node server.js
