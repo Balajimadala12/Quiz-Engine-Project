@@ -710,11 +710,24 @@ async function loadQuestionBank() {
     if (response.ok) {
       questionBank = await response.json();
       onDeptChange();
-    } else {
-      alert("Failed to load question bank, server returned status: " + response.status);
+      return;
     }
   } catch (e) {
-    alert("Connection Error. Make sure local backend server is running on port 8080. " + e.message);
+    console.error("Error loading questions from API, attempting fallback:", e);
+  }
+
+  // Fallback to loading static questions.json file directly from root (great for static hosting like Netlify)
+  try {
+    const fallbackResponse = await fetch('/questions.json');
+    if (fallbackResponse.ok) {
+      questionBank = await fallbackResponse.json();
+      console.log("Question bank loaded from static questions.json fallback.");
+      onDeptChange();
+    } else {
+      alert("Failed to load questions from database fallback (Status: " + fallbackResponse.status + ")");
+    }
+  } catch (err) {
+    alert("Connection Error. Make sure local backend server is running on port 8080. " + err.message);
   }
 }
 

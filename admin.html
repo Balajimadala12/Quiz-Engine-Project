@@ -561,6 +561,9 @@ function isAuthorized() {
 async function loadLeaderboard(){
   try {
     const response = await fetch(`${API_BASE}/api/results`);
+    if (!response.ok) {
+      throw new Error(`Server returned status: ${response.status} (${response.statusText || 'Not Found'})`);
+    }
     allRecords = await response.json();
 
     // Calculate Summary Stats

@@ -35,7 +35,7 @@ async function initQuestionBank() {
 
   // Fallback to loading static questions.json file directly from root (great for static hosting like Netlify)
   try {
-    const fallbackResponse = await fetch('questions.json');
+    const fallbackResponse = await fetch('/questions.json');
     if (fallbackResponse.ok) {
       questionBank = await fallbackResponse.json();
       console.log("Question bank loaded from static questions.json fallback.");
