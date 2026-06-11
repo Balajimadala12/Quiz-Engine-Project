@@ -324,6 +324,17 @@ button:active {
     box-shadow: 0 0 12px rgba(229, 193, 88, 0.25);
 }
 
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .filter-row input, .filter-row select {
+        width: 100%;
+        flex: none;
+    }
+}
+
 /* Shake animation */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
@@ -420,6 +431,31 @@ button:active {
     margin-bottom: 0 !important;
     font-weight: 600;
 }
+
+.admin-link-header {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+.header-btn {
+  font-family: 'Outfit', sans-serif;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.header-btn:hover, .header-btn.active {
+  color: #e5c158;
+  background: rgba(229, 193, 88, 0.06);
+  border-color: rgba(229, 193, 88, 0.25);
+  box-shadow: 0 4px 12px rgba(229, 193, 88, 0.1);
+}
 </style>
 
 </head>
@@ -427,6 +463,12 @@ button:active {
 <body>
 
 <h1>Quiz Leaderboard</h1>
+
+<div class="admin-link-header">
+  <a href="admin.html" class="header-btn active">📊 Leaderboard Admin</a>
+  <a href="questions-admin.html" class="header-btn">📝 Question Editor Admin</a>
+  <a href="index.html" class="header-btn">🎓 Student Quiz Portal</a>
+</div>
 
 <!-- Admin Login Panel -->
 <div id="adminLogin" class="login-container">
@@ -460,6 +502,12 @@ button:active {
     <!-- Search & Filter Controls -->
     <div class="filter-row">
         <input type="text" id="searchInput" placeholder="🔍 Search participant by Name or VTU No...">
+        <select id="deptFilter">
+            <option value="">All Departments</option>
+        </select>
+        <select id="subjectFilter">
+            <option value="">All Subjects</option>
+        </select>
         <select id="slotFilter">
             <option value="">All Slots</option>
         </select>
@@ -473,6 +521,7 @@ button:active {
                     <th>Name</th>
                     <th>VTU No</th>
                     <th>Department</th>
+                    <th>Subject</th>
                     <th>Slot</th>
                     <th>Semester</th>
                     <th>Score</th>
@@ -489,7 +538,7 @@ button:active {
 <script>
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? (window.location.port === '8080' ? '' : 'http://localhost:8080')
-  : '';
+  : (window.location.protocol === 'file:') ? 'http://localhost:8080' : '';
 
 let allRecords = [];
 
@@ -517,8 +566,8 @@ async function loadLeaderboard(){
     // Calculate Summary Stats
     updateStats(allRecords);
 
-    // Populate Unique Slots
-    populateSlotsFilter(allRecords);
+    // Populate Unique Filters
+    populateAllFilters(allRecords);
 
     // Render all records initially
     renderTable(allRecords);
@@ -561,18 +610,38 @@ function updateStats(records) {
   document.getElementById("statPassRate").textContent = Math.round(passRate) + "%";
 }
 
-function populateSlotsFilter(records) {
+function populateAllFilters(records) {
+  // Slots
   const slots = [...new Set(records.map(r => r.slot || r.Slot || r.slotNo || r.SlotNo).filter(Boolean))].sort();
-  const filter = document.getElementById("slotFilter");
-  
-  // Preserve default option
-  filter.innerHTML = '<option value="">All Slots</option>';
-  
+  const slotFilter = document.getElementById("slotFilter");
+  slotFilter.innerHTML = '<option value="">All Slots</option>';
   slots.forEach(slot => {
     const opt = document.createElement("option");
     opt.value = slot;
     opt.textContent = slot;
-    filter.appendChild(opt);
+    slotFilter.appendChild(opt);
+  });
+
+  // Departments
+  const depts = [...new Set(records.map(r => r.department || r.Dept || r.dept || 'N/A').filter(Boolean))].sort();
+  const deptFilter = document.getElementById("deptFilter");
+  deptFilter.innerHTML = '<option value="">All Departments</option>';
+  depts.forEach(dept => {
+    const opt = document.createElement("option");
+    opt.value = dept;
+    opt.textContent = dept;
+    deptFilter.appendChild(opt);
+  });
+
+  // Subjects
+  const subjects = [...new Set(records.map(r => r.subject || r.Subject || 'N/A').filter(Boolean))].sort();
+  const subjectFilter = document.getElementById("subjectFilter");
+  subjectFilter.innerHTML = '<option value="">All Subjects</option>';
+  subjects.forEach(sub => {
+    const opt = document.createElement("option");
+    opt.value = sub;
+    opt.textContent = sub;
+    subjectFilter.appendChild(opt);
   });
 }
 
@@ -611,6 +680,7 @@ function renderTable(records) {
 
     const currentVtu = r.vtuNo || r.VTUNo || r.vtu || r.VTU || 'N/A';
     const currentDept = r.department || r.Dept || r.dept || 'N/A';
+    const currentSubject = r.subject || r.Subject || 'N/A';
     const currentSlot = r.slot || r.Slot || r.slotNo || r.SlotNo || 'N/A';
     const currentSemester = r.semester || r.Semester || 'N/A';
 
@@ -632,6 +702,7 @@ function renderTable(records) {
         <td>${displayName}</td>
         <td>${currentVtu}</td>
         <td>${currentDept}</td>
+        <td>${currentSubject}</td>
         <td>${currentSlot}</td>
         <td>${currentSemester}</td>
         <td>${displayScore}</td>
@@ -650,17 +721,25 @@ function renderTable(records) {
 function filterLeaderboard() {
   const searchVal = document.getElementById("searchInput").value.toLowerCase();
   const slotVal = document.getElementById("slotFilter").value;
+  const deptVal = document.getElementById("deptFilter").value;
+  const subjectVal = document.getElementById("subjectFilter").value;
 
   const filtered = allRecords.filter(r => {
     const currentVtu = r.vtuNo || r.VTUNo || r.vtu || r.VTU || '';
     const currentSlot = r.slot || r.Slot || r.slotNo || r.SlotNo || '';
     const currentDept = r.department || r.Dept || r.dept || '';
+    const currentSubject = r.subject || r.Subject || '';
 
     const nameMatch = (r.name || "").toLowerCase().includes(searchVal);
     const vtuMatch = String(currentVtu).toLowerCase().includes(searchVal);
-    const deptMatch = String(currentDept).toLowerCase().includes(searchVal);
+    const deptSearchMatch = String(currentDept).toLowerCase().includes(searchVal);
+    const subjectSearchMatch = String(currentSubject).toLowerCase().includes(searchVal);
+    
     const slotMatch = slotVal === "" || String(currentSlot) === slotVal;
-    return (nameMatch || vtuMatch || deptMatch) && slotMatch;
+    const deptMatch = deptVal === "" || String(currentDept) === deptVal;
+    const subjectMatch = subjectVal === "" || String(currentSubject) === subjectVal;
+    
+    return (nameMatch || vtuMatch || deptSearchMatch || subjectSearchMatch) && slotMatch && deptMatch && subjectMatch;
   });
 
   renderTable(filtered);
@@ -723,6 +802,8 @@ if (isAuthorized()) {
 // Attach filter listeners once
 document.getElementById("searchInput").addEventListener("input", filterLeaderboard);
 document.getElementById("slotFilter").addEventListener("change", filterLeaderboard);
+document.getElementById("deptFilter").addEventListener("change", filterLeaderboard);
+document.getElementById("subjectFilter").addEventListener("change", filterLeaderboard);
 
 </script>
 

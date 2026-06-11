@@ -1,0 +1,1886 @@
+{
+  "CSE": {
+    "SQL": [
+      {
+        "question": "Which SQL statement is used to extract data from a database?",
+        "answers": [
+          "SELECT",
+          "EXTRACT",
+          "GET",
+          "OPEN"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which SQL keyword is used to sort the result-set?",
+        "answers": [
+          "SORT BY",
+          "ORDER BY",
+          "SORT",
+          "ALIGN"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which SQL statement is used to insert new data in a database?",
+        "answers": [
+          "INSERT INTO",
+          "ADD RECORD",
+          "INSERT RECORD",
+          "ADD NEW"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which SQL constraint uniquely identifies each record in a database table?",
+        "answers": [
+          "FOREIGN KEY",
+          "UNIQUE KEY",
+          "PRIMARY KEY",
+          "CHECK KEY"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What does SQL stand for?",
+        "answers": [
+          "System Query Language",
+          "Structured Query Language",
+          "Standard Queue List",
+          "Simple Query Logic"
+        ],
+        "correct": 1
+      }
+    ],
+    "Web Development": [
+      {
+        "question": "Which HTML tag is used to create a hyperlink?",
+        "answers": [
+          "<a>",
+          "<link>",
+          "<href>",
+          "<hyper>"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which CSS property changes text color?",
+        "answers": [
+          "font-color",
+          "text-style",
+          "color",
+          "background"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which keyword declares a constant variable in JavaScript?",
+        "answers": [
+          "var",
+          "let",
+          "const",
+          "constant"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which CSS property creates space inside an element?",
+        "answers": [
+          "margin",
+          "padding",
+          "border",
+          "spacing"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which JS method selects an element by ID?",
+        "answers": [
+          "getElement()",
+          "getElementById()",
+          "selectId()",
+          "queryId()"
+        ],
+        "correct": 1
+      }
+    ],
+    "Java Programming": [
+      {
+        "question": "Which data type is used to create a variable that should store text in Java?",
+        "answers": [
+          "String",
+          "char",
+          "txt",
+          "str"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "How do you create a variable with the numeric value 5 in Java?",
+        "answers": [
+          "num x = 5;",
+          "int x = 5;",
+          "float x = 5;",
+          "x = 5;"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which method is the main entry point for any Java program?",
+        "answers": [
+          "main()",
+          "start()",
+          "public static void main(String[] args)",
+          "init()"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which keyword is used to inherit a class in Java?",
+        "answers": [
+          "extends",
+          "implements",
+          "inherits",
+          "import"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the size of an int data type in Java?",
+        "answers": [
+          "2 bytes",
+          "4 bytes",
+          "8 bytes",
+          "16 bytes"
+        ],
+        "correct": 1
+      }
+    ],
+    "Python Programming": [
+      {
+        "question": "What is the correct file extension for Python files?",
+        "answers": [
+          ".pt",
+          ".py",
+          ".pyt",
+          ".pyc"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "How do you create a variable with the numeric value 5 in Python?",
+        "answers": [
+          "int x = 5;",
+          "x = 5",
+          "num x = 5",
+          "x := 5"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which keyword is used to define a function in Python?",
+        "answers": [
+          "def",
+          "function",
+          "func",
+          "define"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which data structure in Python is ordered, mutable, and allows duplicate elements?",
+        "answers": [
+          "List",
+          "Tuple",
+          "Set",
+          "Dictionary"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "How do you start a comment in Python?",
+        "answers": [
+          "//",
+          "/*",
+          "#",
+          "<!--"
+        ],
+        "correct": 2
+      }
+    ],
+    "Fundamentals of Computer Networks (FCN)": [
+      {
+        "question": "What does IP stand for in networking?",
+        "answers": [
+          "Intranet Port",
+          "Internet Protocol",
+          "Internal Packet",
+          "Information Path"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which OSI layer is responsible for routing packets?",
+        "answers": [
+          "Physical Layer",
+          "Data Link Layer",
+          "Network Layer",
+          "Transport Layer"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the standard port number for HTTP?",
+        "answers": [
+          "21",
+          "80",
+          "443",
+          "8080"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which protocol is used to securely transfer web pages?",
+        "answers": [
+          "FTP",
+          "HTTP",
+          "HTTPS",
+          "SMTP"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the size of an IPv4 address?",
+        "answers": [
+          "16 bits",
+          "32 bits",
+          "64 bits",
+          "128 bits"
+        ],
+        "correct": 1
+      }
+    ],
+    "Big Data Analytics": [
+      {
+        "question": "What are the three V's of Big Data?",
+        "answers": [
+          "Volume, Velocity, Variety",
+          "Value, Virtual, Visual",
+          "Vast, Volatile, Variable",
+          "Vector, Vertex, Velocity"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which open-source framework is used for distributed storage and processing?",
+        "answers": [
+          "Hadoop",
+          "MySQL",
+          "Docker",
+          "Node.js"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the primary data processing component of MapReduce?",
+        "answers": [
+          "Map and Reduce",
+          "Sort and Filter",
+          "Query and Fetch",
+          "Load and Save"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which database type is preferred for storing unstructured Big Data?",
+        "answers": [
+          "SQL",
+          "Relational",
+          "NoSQL",
+          "Flat File"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What does HDFS stand for?",
+        "answers": [
+          "Hadoop Data File System",
+          "Hadoop Distributed File System",
+          "High Definition File Storage",
+          "Hosting Distributed File System"
+        ],
+        "correct": 1
+      }
+    ],
+    "Machine Learning": [
+      {
+        "question": "Which algorithm is a supervised learning algorithm used for classification?",
+        "answers": [
+          "K-Means",
+          "Decision Tree",
+          "Apriori",
+          "PCA"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the primary goal of unsupervised learning?",
+        "answers": [
+          "Find patterns in labeled data",
+          "Find hidden patterns in unlabeled data",
+          "Predict continuous values",
+          "Reinforce decisions"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which metric is commonly used to evaluate a regression model?",
+        "answers": [
+          "Accuracy",
+          "F1-Score",
+          "Mean Squared Error",
+          "Precision"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What does overfitting mean in Machine Learning?",
+        "answers": [
+          "Model performs well on test data only",
+          "Model performs well on training data but poorly on test data",
+          "Model is too simple",
+          "Model has zero bias"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which library is widely used for ML in Python?",
+        "answers": [
+          "Scikit-Learn",
+          "Matplotlib",
+          "Django",
+          "Flask"
+        ],
+        "correct": 0
+      }
+    ],
+    "Data Visualisation": [
+      {
+        "question": "Which chart type is best for showing trends over time?",
+        "answers": [
+          "Pie Chart",
+          "Bar Chart",
+          "Line Chart",
+          "Scatter Plot"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which python library is the foundation for data visualization?",
+        "answers": [
+          "Matplotlib",
+          "NumPy",
+          "Pandas",
+          "Requests"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the primary purpose of a Heatmap?",
+        "answers": [
+          "Visualize correlation or data density using color",
+          "Show hierarchical structures",
+          "Map geographical routes",
+          "Display timelines"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which tool is widely used for interactive business dashboards?",
+        "answers": [
+          "Tableau",
+          "GitHub",
+          "Notepad++",
+          "CMD"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which chart displays the distribution of a continuous variable?",
+        "answers": [
+          "Histogram",
+          "Line Chart",
+          "Pie Chart",
+          "Gantt Chart"
+        ],
+        "correct": 0
+      }
+    ],
+    "Operating System": [
+      {
+        "question": "What is the main function of the kernel in an OS?",
+        "answers": [
+          "Run web browser",
+          "Manage system resources and hardware communication",
+          "Compile code",
+          "Design user interface"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is a deadlock in Operating Systems?",
+        "answers": [
+          "A state where process terminates",
+          "A state where processes are blocked waiting for each other's resources",
+          "A hardware crash",
+          "Low memory state"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which scheduling algorithm allocates CPU to the process that arrives first?",
+        "answers": [
+          "Shortest Job First",
+          "First-Come, First-Served",
+          "Round Robin",
+          "Priority Scheduling"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does virtual memory do?",
+        "answers": [
+          "Increases physical RAM hardware",
+          "Simulates additional RAM using disk space",
+          "Cleans registry",
+          "Encrypts files"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is a thread in OS?",
+        "answers": [
+          "The smallest unit of execution within a process",
+          "A system call",
+          "A security protocol",
+          "A file extension"
+        ],
+        "correct": 0
+      }
+    ],
+    "Artificial Intelligence": [
+      {
+        "question": "Who is considered the father of Artificial Intelligence?",
+        "answers": [
+          "Alan Turing",
+          "John McCarthy",
+          "Bill Gates",
+          "Ada Lovelace"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does NLP stand for in AI?",
+        "answers": [
+          "Natural Language Processing",
+          "Numeric Logic Programming",
+          "Network Link Protocol",
+          "Neural Loop Path"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which search algorithm is commonly used in game playing like Chess?",
+        "answers": [
+          "Binary Search",
+          "Minimax",
+          "Depth First Search",
+          "Linear Search"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is a Turing Test used for?",
+        "answers": [
+          "To measure computer clock speed",
+          "To determine if a machine can exhibit intelligent behavior like a human",
+          "To test network speed",
+          "To compile code"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the activation function commonly used in neural networks?",
+        "answers": [
+          "ReLU",
+          "Sine",
+          "Logarithm",
+          "Quadratic"
+        ],
+        "correct": 0
+      }
+    ]
+  },
+  "ECE": {
+    "VLSI Design": [
+      {
+        "question": "Which CMOS transistor conducts when the input voltage is high (logic 1)?",
+        "answers": [
+          "NMOS",
+          "PMOS",
+          "Both NMOS and PMOS",
+          "Neither"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "In VLSI fabrication, photolithography is primarily used to...",
+        "answers": [
+          "Slice silicon ingots",
+          "Transfer circuit patterns to substrate",
+          "Clean chips",
+          "Package ICs"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does VLSI stand for in electronics?",
+        "answers": [
+          "Very Low Scale Integration",
+          "Very Large Scale Integration",
+          "Variable Linear System Integration",
+          "Volatile Large Storage Integrated"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Propagation delay in modern VLSI circuits is typically measured in...",
+        "answers": [
+          "Seconds",
+          "Milliseconds",
+          "Microseconds",
+          "Nanoseconds"
+        ],
+        "correct": 3
+      },
+      {
+        "question": "What does the Fan-out of a logic gate represent?",
+        "answers": [
+          "Input capacity",
+          "Max number of similar gates it can drive",
+          "Cooling system speed",
+          "Thermal limit"
+        ],
+        "correct": 1
+      }
+    ],
+    "Digital Electronics": [
+      {
+        "question": "Which logic gate yields output 1 only when all inputs are 0?",
+        "answers": [
+          "OR",
+          "AND",
+          "NOR",
+          "NAND"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which sequential circuit stores a single bit of binary data?",
+        "answers": [
+          "Decoder",
+          "Multiplexer",
+          "Flip-Flop",
+          "Encoder"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "How many select lines does an 8-to-1 multiplexer have?",
+        "answers": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "How many flip-flops are required to design a decade counter?",
+        "answers": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "The Boolean expression A + A' is simplified to...",
+        "answers": [
+          "0",
+          "1",
+          "A",
+          "A'"
+        ],
+        "correct": 1
+      }
+    ],
+    "Embedded Systems": [
+      {
+        "question": "What is a key difference between a microcontroller and a microprocessor?",
+        "answers": [
+          "Microcontroller has on-chip RAM, ROM, and I/O",
+          "Microprocessor has on-chip RAM, ROM, and I/O",
+          "Microcontroller runs faster",
+          "Microprocessor consumes less power"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What does RTOS stand for in embedded systems?",
+        "answers": [
+          "Read Time Operating System",
+          "Real-Time Operating System",
+          "Run Time Operating System",
+          "Random Transfer Operating System"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which component resets the microcontroller if the software hangs?",
+        "answers": [
+          "Timer",
+          "Interrupt",
+          "Watchdog Timer",
+          "ADC"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which serial communication protocol uses RX and TX lines only?",
+        "answers": [
+          "I2C",
+          "SPI",
+          "UART",
+          "CAN"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What code runs first when a microcontroller is powered on?",
+        "answers": [
+          "Main program",
+          "Bootloader",
+          "Interrupt Service Routine",
+          "Reset Vector only"
+        ],
+        "correct": 1
+      }
+    ],
+    "Microprocessors": [
+      {
+        "question": "What is the word size of the classic 8085 microprocessor?",
+        "answers": [
+          "4-bit",
+          "8-bit",
+          "16-bit",
+          "32-bit"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which CPU block performs arithmetic and logical operations?",
+        "answers": [
+          "Control Unit",
+          "Instruction Register",
+          "Arithmetic Logic Unit (ALU)",
+          "Stack Pointer"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which register holds the address of the next instruction to be executed?",
+        "answers": [
+          "Accumulator",
+          "Program Counter",
+          "Instruction Decoder",
+          "Stack Pointer"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What language consists of mnemonics like MOV, ADD, and SUB?",
+        "answers": [
+          "Machine language",
+          "Assembly language",
+          "C++",
+          "Fortran"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the primary purpose of a microprocessor stack?",
+        "answers": [
+          "To store permanent code",
+          "To save CPU status and return addresses during interrupts",
+          "To handle math operations",
+          "To cache instructions"
+        ],
+        "correct": 1
+      }
+    ],
+    "Communication Systems": [
+      {
+        "question": "What is the process of mapping information signals to a high-frequency carrier wave called?",
+        "answers": [
+          "Demodulation",
+          "Modulation",
+          "Amplification",
+          "Filtering"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which modulation is more resistant to atmospheric noise?",
+        "answers": [
+          "Amplitude Modulation (AM)",
+          "Frequency Modulation (FM)",
+          "Phase Shift Keying (PSK) only",
+          "Neither"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does the sampling theorem state about the sampling frequency?",
+        "answers": [
+          "fs >= fm",
+          "fs >= 2fm",
+          "fs = fm / 2",
+          "fs <= 2fm"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What property determines the maximum data carry capacity of a channel?",
+        "answers": [
+          "Amplitude",
+          "Phase",
+          "Bandwidth",
+          "Impedance"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the primary light transmission medium in optical fiber networks?",
+        "answers": [
+          "Copper core",
+          "Silicon substrate",
+          "Glass/Plastic core",
+          "Air vacuum"
+        ],
+        "correct": 2
+      }
+    ],
+    "Signal Processing": [
+      {
+        "question": "Which mathematical operation converts a time-domain signal to frequency-domain?",
+        "answers": [
+          "Laplace Transform",
+          "Fourier Transform",
+          "Z-Transform",
+          "Derivative"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does DSP stand for in electronics?",
+        "answers": [
+          "Digital Signal Processing",
+          "Direct System Path",
+          "Digital Storage Protocol",
+          "Double Signal Phase"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the minimum sampling rate required to avoid aliasing called?",
+        "answers": [
+          "Nyquist Rate",
+          "Shannon Rate",
+          "Fourier Rate",
+          "Bode Rate"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which circuit blocks unwanted frequency bands from a signal?",
+        "answers": [
+          "Amplifier",
+          "Filter",
+          "Oscillator",
+          "Modulator"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What device converts continuous physical voltage signals to discrete numbers?",
+        "answers": [
+          "DAC",
+          "ADC",
+          "Op-Amp",
+          "Multiplexer"
+        ],
+        "correct": 1
+      }
+    ]
+  },
+  "CIVIL": {
+    "Surveying": [
+      {
+        "question": "Which surveying instrument is used to determine land elevations?",
+        "answers": [
+          "Compass",
+          "Dumpy Level",
+          "Planimeter",
+          "Alidade"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the standard length of a metric survey chain?",
+        "answers": [
+          "10m",
+          "20m",
+          "50m",
+          "100m"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "In plane surveying, what is the line of collimation?",
+        "answers": [
+          "Plumb line",
+          "Line of sight through telescope center",
+          "Horizontal line",
+          "Ground level curve"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which instrument measures angles in horizontal and vertical planes?",
+        "answers": [
+          "Theodolite",
+          "Alidade",
+          "Tacheometer",
+          "Dumpy Level"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What surveying method determines coordinates of new points using distance measurements?",
+        "answers": [
+          "Triangulation",
+          "Traversing",
+          "Trilateration",
+          "Radiation"
+        ],
+        "correct": 2
+      }
+    ],
+    "Concrete Technology": [
+      {
+        "question": "Which type of cement is most commonly used for general building construction?",
+        "answers": [
+          "Rapid Hardening Cement",
+          "White Cement",
+          "Ordinary Portland Cement (OPC)",
+          "High Alumina Cement"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Concrete is primarily a mixture of cement, water, and which other component?",
+        "answers": [
+          "Steel bars",
+          "Aggregates (sand & gravel)",
+          "Lime plaster",
+          "Wood fibers"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the process of maintaining moisture in concrete after casting called?",
+        "answers": [
+          "Compaction",
+          "Batching",
+          "Curing",
+          "Segregation"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What property of fresh concrete does the slump test measure?",
+        "answers": [
+          "Compressive strength",
+          "Permeability",
+          "Workability",
+          "Density"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Why is reinforcement steel added inside concrete slabs?",
+        "answers": [
+          "To reduce weight",
+          "To increase tensile strength",
+          "To prevent water leakage",
+          "To accelerate drying time"
+        ],
+        "correct": 1
+      }
+    ],
+    "Structural Engineering": [
+      {
+        "question": "What is the primary load-bearing structural member of a roof truss?",
+        "answers": [
+          "Purlin",
+          "Tie beam",
+          "Principal Rafter",
+          "Sag tie"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "A cantilever beam is supported at...",
+        "answers": [
+          "Both ends",
+          "One end only",
+          "The center only",
+          "Multiple intermediate rollers"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the approximate unit weight of standard reinforced concrete?",
+        "answers": [
+          "15 kN/m3",
+          "20 kN/m3",
+          "25 kN/m3",
+          "30 kN/m3"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which structural element primarily resists loads through bending stresses?",
+        "answers": [
+          "Column",
+          "Strut",
+          "Beam",
+          "Foundation pile"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "The vertical structural member of a building frame supporting slabs is a...",
+        "answers": [
+          "Beam",
+          "Column",
+          "Truss",
+          "Foundation footing"
+        ],
+        "correct": 1
+      }
+    ],
+    "Geotechnical Engineering": [
+      {
+        "question": "Which type of soil has the smallest particle sizes?",
+        "answers": [
+          "Sand",
+          "Silt",
+          "Gravel",
+          "Clay"
+        ],
+        "correct": 3
+      },
+      {
+        "question": "Which foundation is preferred for buildings on weak soil carrying heavy loads?",
+        "answers": [
+          "Strip Footing",
+          "Raft/Mat Foundation",
+          "Isolated Footing",
+          "Strap Footing"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the process of expelling air voids from soil to increase density called?",
+        "answers": [
+          "Consolidation",
+          "Compaction",
+          "Gradation",
+          "Shearing"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What property describes the rate at which water flows through soil pores?",
+        "answers": [
+          "Porosity",
+          "Permeability",
+          "Void Ratio",
+          "Plasticity"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What index test determines the consistency limit states of clay soils?",
+        "answers": [
+          "Slump test",
+          "Atterberg Limits",
+          "Sieve analysis",
+          "Proctor test"
+        ],
+        "correct": 1
+      }
+    ],
+    "Transportation Engineering": [
+      {
+        "question": "Which binding material is commonly used in flexible road pavement construction?",
+        "answers": [
+          "Cement",
+          "Tar",
+          "Bitumen",
+          "Resin"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the transverse slope provided to road surfaces for drainage called?",
+        "answers": [
+          "Gradient",
+          "Camber",
+          "Super-elevation",
+          "Curve"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which road sign shape is standard for warning indicators?",
+        "answers": [
+          "Circular",
+          "Octagonal",
+          "Triangular",
+          "Rectangular"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which factor has the highest influence on airport runway length planning?",
+        "answers": [
+          "Wind speed",
+          "Aircraft landing weight",
+          "Airport altitude and temperature",
+          "Runway thickness"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the elevation of the outer edge of a road curve relative to the inner edge called?",
+        "answers": [
+          "Camber",
+          "Super-elevation",
+          "Grade",
+          "Transition"
+        ],
+        "correct": 1
+      }
+    ]
+  },
+  "MECH": {
+    "Thermodynamics": [
+      {
+        "question": "Which law of thermodynamics defines the concept of entropy?",
+        "answers": [
+          "Zeroth Law",
+          "First Law",
+          "Second Law",
+          "Third Law"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "The thermal efficiency of a Carnot heat engine depends directly on...",
+        "answers": [
+          "Working fluid density",
+          "Engine dimensions",
+          "Operating temperature limits",
+          "Calorific value"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which thermodynamic cycle represents the ideal standard for a steam power plant?",
+        "answers": [
+          "Carnot Cycle",
+          "Otto Cycle",
+          "Diesel Cycle",
+          "Rankine Cycle"
+        ],
+        "correct": 3
+      },
+      {
+        "question": "What cycle has a constant-volume heat addition process?",
+        "answers": [
+          "Otto Cycle",
+          "Diesel Cycle",
+          "Dual Cycle",
+          "Brayton Cycle"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the coefficient of performance (COP) of a refrigerator?",
+        "answers": [
+          "Heat removed / Work input",
+          "Work input / Heat removed",
+          "Heat added / Work input",
+          "Work input / Heat added"
+        ],
+        "correct": 0
+      }
+    ],
+    "Fluid Mechanics": [
+      {
+        "question": "What is the SI unit of dynamic fluid viscosity?",
+        "answers": [
+          "Pascal",
+          "Pascal-second",
+          "Poiseuille-second",
+          "Joule-second"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Fluid flow in which fluid particles move in smooth parallel paths is described as...",
+        "answers": [
+          "Turbulent",
+          "Laminar",
+          "Rotational",
+          "Transitional"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which instrument measures the volume flow rate of a fluid in a pipeline?",
+        "answers": [
+          "Manometer",
+          "Venturimeter",
+          "Thermocouple",
+          "Hydrometer"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "A fluid turbine is defined as a machine that...",
+        "answers": [
+          "Pumps liquids",
+          "Compresses gases",
+          "Converts fluid energy to rotary mechanical energy",
+          "Heats water"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "The mass density of pure water is at its maximum temperature of...",
+        "answers": [
+          "0°C",
+          "4°C",
+          "100°C",
+          "-4°C"
+        ],
+        "correct": 1
+      }
+    ],
+    "Machine Design": [
+      {
+        "question": "What is the primary purpose of a flywheel in an internal combustion engine?",
+        "answers": [
+          "To cool the cylinders",
+          "To store and smooth energy delivery",
+          "To ignite the fuel mixture",
+          "To filter exhaust gases"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which gear type is preferred to connect non-parallel, intersecting shafts?",
+        "answers": [
+          "Spur Gear",
+          "Helical Gear",
+          "Bevel Gear",
+          "Worm Gear"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which component is used to align and join two rotating shafts together?",
+        "answers": [
+          "Key",
+          "Spline",
+          "Coupling",
+          "Cotter"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Hooke's Law of mechanical elasticity remains valid up to the...",
+        "answers": [
+          "Yield point",
+          "Ultimate strength point",
+          "Limit of proportionality",
+          "Breaking point"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the ratio of lateral strain to longitudinal strain in mechanics called?",
+        "answers": [
+          "Young's Modulus",
+          "Bulk Modulus",
+          "Poisson's Ratio",
+          "Rigidity Modulus"
+        ],
+        "correct": 2
+      }
+    ],
+    "Heat Transfer": [
+      {
+        "question": "Which heat transfer mechanism occurs through direct molecular contact?",
+        "answers": [
+          "Convection",
+          "Radiation",
+          "Conduction",
+          "Advection"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which wave type is responsible for heat transfer via thermal radiation?",
+        "answers": [
+          "Sound waves",
+          "Electromagnetic waves",
+          "Water waves",
+          "Seismic waves"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What mode of heat transfer involves bulk motion of fluid particles?",
+        "answers": [
+          "Conduction",
+          "Convection",
+          "Radiation",
+          "Absorption"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What property determines the rate of conduction heat transfer in a solid?",
+        "answers": [
+          "Thermal conductivity",
+          "Specific heat capacity",
+          "Density",
+          "Thermal expansion"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What device transfers heat from one fluid stream to another without mixing them?",
+        "answers": [
+          "Boiler",
+          "Condenser",
+          "Heat Exchanger",
+          "Radiator"
+        ],
+        "correct": 2
+      }
+    ],
+    "Manufacturing Technology": [
+      {
+        "question": "Which machine tool performs drilling, boring, and threading on cylindrical parts?",
+        "answers": [
+          "Milling machine",
+          "Shaper",
+          "Lathe",
+          "Grinder"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What manufacturing process involves pouring molten metal into a mold cavity?",
+        "answers": [
+          "Forging",
+          "Extrusion",
+          "Casting",
+          "Welding"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What process hammers or presses metal into shape to improve structural strength?",
+        "answers": [
+          "Casting",
+          "Forging",
+          "Machining",
+          "Drawing"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which welding process uses a non-consumable tungsten electrode?",
+        "answers": [
+          "MIG welding",
+          "TIG welding",
+          "SMAW",
+          "Friction welding"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does CNC stand for in modern manufacturing systems?",
+        "answers": [
+          "Computer Numerical Control",
+          "Central Network Control",
+          "Critical Number Count",
+          "Computer Network Center"
+        ],
+        "correct": 0
+      }
+    ]
+  },
+  "EEE": {
+    "Power Systems": [
+      {
+        "question": "Which component in an AC power system steps up or steps down voltage levels?",
+        "answers": [
+          "Capacitor",
+          "Transformer",
+          "Inductor",
+          "Resistor"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "An electrical alternator converts...",
+        "answers": [
+          "AC to DC",
+          "DC to AC",
+          "Mechanical energy to AC electrical energy",
+          "Electrical energy to heat"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the standard utility AC electricity frequency in India?",
+        "answers": [
+          "50 Hz",
+          "60 Hz",
+          "100 Hz",
+          "120 Hz"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which electrical DC generator works on the fundamental principle of...",
+        "answers": [
+          "Lenz's Law",
+          "Faraday's Law of Electromagnetic Induction",
+          "Ampere's Law",
+          "Coulomb's Law"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "In a balanced three-phase star (Y) connection, the line voltage is equal to...",
+        "answers": [
+          "Phase voltage",
+          "sqrt(3) * phase voltage",
+          "Phase voltage / sqrt(3)",
+          "3 * phase voltage"
+        ],
+        "correct": 1
+      }
+    ],
+    "Control Systems": [
+      {
+        "question": "What component regulates a system state by comparing output against setpoint?",
+        "answers": [
+          "Sensor",
+          "Feedback Loop / Controller",
+          "Actuator",
+          "Amplifier"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What mathematical function represents the ratio of output to input Laplace transforms?",
+        "answers": [
+          "State space",
+          "Transfer Function",
+          "Characteristic equation",
+          "Frequency response"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does PID stand for in control controllers?",
+        "answers": [
+          "Phase Integral Derivative",
+          "Proportional Integral Derivative",
+          "Position Integral Deviation",
+          "Power Input Driver"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What condition is met if a system output stays bounded for any bounded input?",
+        "answers": [
+          "Linearity",
+          "Time-invariance",
+          "Stability",
+          "Controllability"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What graphical plot shows open-loop frequency response magnitude and phase?",
+        "answers": [
+          "Bode Plot",
+          "Root Locus",
+          "Nyquist Plot",
+          "Bode Diagram only"
+        ],
+        "correct": 0
+      }
+    ],
+    "Electrical Machines": [
+      {
+        "question": "Which electrical motor is highly preferred for constant speed industrial applications?",
+        "answers": [
+          "DC Series Motor",
+          "Universal Motor",
+          "Synchronous Motor",
+          "Repulsion Motor"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "The steel core of a transformer is laminated to minimize...",
+        "answers": [
+          "Copper losses",
+          "Eddy current losses",
+          "Hysteresis losses",
+          "Windage losses"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which energy losses in a transformer fluctuate based on load currents?",
+        "answers": [
+          "Hysteresis losses",
+          "Eddy current losses",
+          "Copper losses",
+          "Friction losses"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What is the difference between synchronous speed and actual rotor speed in an induction motor called?",
+        "answers": [
+          "Lag",
+          "Lead",
+          "Slip",
+          "Slew"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What effect causes distortion of the main magnetic field by armature current?",
+        "answers": [
+          "Hysteresis",
+          "Eddy current",
+          "Armature Reaction",
+          "Saturation"
+        ],
+        "correct": 2
+      }
+    ],
+    "Power Electronics": [
+      {
+        "question": "Which electrical device is used to convert AC voltage into DC voltage?",
+        "answers": [
+          "Inverter",
+          "Rectifier",
+          "Chopper",
+          "Cycloconverter"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which device converts DC voltage to AC voltage?",
+        "answers": [
+          "Rectifier",
+          "Inverter",
+          "Chopper",
+          "Transformer"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "How many terminals does a Silicon Controlled Rectifier (SCR) have?",
+        "answers": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which terminal in a power MOSFET controls the conduction channel?",
+        "answers": [
+          "Source",
+          "Drain",
+          "Gate",
+          "Collector"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which power circuit converts static DC voltage to a variable DC voltage?",
+        "answers": [
+          "Inverter",
+          "Chopper",
+          "Rectifier",
+          "Cycloconverter"
+        ],
+        "correct": 1
+      }
+    ],
+    "Circuit Theory": [
+      {
+        "question": "What is the SI unit of electrical conductance?",
+        "answers": [
+          "Ohm",
+          "Siemens",
+          "Henry",
+          "Farad"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which passive component stores electrical energy in an electrostatic field?",
+        "answers": [
+          "Inductor",
+          "Resistor",
+          "Capacitor",
+          "Diode"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "According to Ohm's Law, what is the equation for electrical voltage?",
+        "answers": [
+          "V = I * R",
+          "V = I / R",
+          "V = R / I",
+          "V = I + R"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Kirchhoff's Current Law (KCL) is based directly on the conservation of...",
+        "answers": [
+          "Energy",
+          "Charge",
+          "Momentum",
+          "Mass"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Kirchhoff's Voltage Law (KVL) is based directly on the conservation of...",
+        "answers": [
+          "Charge",
+          "Mass",
+          "Energy",
+          "Force"
+        ],
+        "correct": 2
+      }
+    ]
+  },
+  "BIO TECH": {
+    "Recombinant DNA": [
+      {
+        "question": "Which organism is most commonly used as a host in recombinant DNA cloning experiments?",
+        "answers": [
+          "E. coli",
+          "Saccharomyces cerevisiae",
+          "Influenza virus",
+          "Amoeba"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Which enzyme acts as molecular glue to join two DNA fragments together?",
+        "answers": [
+          "Amylase",
+          "DNA Ligase",
+          "RNA Polymerase",
+          "Pepsin"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which technique is used to amplify a specific sequence of DNA in vitro?",
+        "answers": [
+          "Gel Electrophoresis",
+          "Polymerase Chain Reaction (PCR)",
+          "Western Blotting",
+          "Chromatography"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "A strand of DNA containing genes compiled from different organisms is called...",
+        "answers": [
+          "Mutated DNA",
+          "Recombinant DNA",
+          "Hybridized DNA",
+          "Cloned RNA"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which biological vector is widely utilized in plant genetic engineering?",
+        "answers": [
+          "Bacteriophage",
+          "Ti Plasmid of Agrobacterium",
+          "Cosmid",
+          "YAC"
+        ],
+        "correct": 1
+      }
+    ],
+    "Biochemistry": [
+      {
+        "question": "What does DNA stand for?",
+        "answers": [
+          "Deoxyribonucleic Acid",
+          "Ribonucleic Acid",
+          "Dicarbonate Nucleic Acid",
+          "Deoxygenated Ribose Acid"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What are the monomer building block units of structural proteins?",
+        "answers": [
+          "Nucleotides",
+          "Fatty Acids",
+          "Amino Acids",
+          "Monosaccharides"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What are the chemical products of yeast fermentation under anaerobic conditions?",
+        "answers": [
+          "Lactic acid and water",
+          "Ethanol and Carbon Dioxide",
+          "Acetic acid and oxygen",
+          "Methane and nitrogen"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the typical optimal pH level for most biological human enzymes?",
+        "answers": [
+          "2.0",
+          "5.5",
+          "7.4",
+          "9.8"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which of the following vitamins is water-soluble?",
+        "answers": [
+          "Vitamin A",
+          "Vitamin D",
+          "Vitamin C",
+          "Vitamin K"
+        ],
+        "correct": 2
+      }
+    ],
+    "Microbiology": [
+      {
+        "question": "Which cellular organelle is referred to as the powerhouse of the cell?",
+        "answers": [
+          "Nucleus",
+          "Ribosome",
+          "Mitochondria",
+          "Golgi Apparatus"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which type of cell division yields four non-identical haploid gamete cells?",
+        "answers": [
+          "Mitosis",
+          "Meiosis",
+          "Binary Fission",
+          "Budding"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is the primary biological site of protein synthesis inside a cell?",
+        "answers": [
+          "Ribosome",
+          "Lysosome",
+          "Nucleolus",
+          "Centrosome"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "The first discovered antibiotic Penicillin was isolated from which biological source?",
+        "answers": [
+          "Bacteria",
+          "Fungus / Penicillium",
+          "Algae",
+          "Yeast"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Which bacteria is standard in microbiology labs as a model organism?",
+        "answers": [
+          "E. coli",
+          "T. rex",
+          "Influenza",
+          "Streptococcus"
+        ],
+        "correct": 0
+      }
+    ],
+    "Bioinformatics": [
+      {
+        "question": "The human genome consists of approximately how many DNA base pairs?",
+        "answers": [
+          "300,000",
+          "3 Million",
+          "3 Billion",
+          "30 Billion"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "Which tool is standard in bioinformatics for finding sequence similarity?",
+        "answers": [
+          "BLAST",
+          "Excel",
+          "Word",
+          "Docker"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What molecular biology process transcribes DNA code into mRNA?",
+        "answers": [
+          "Replication",
+          "Transcription",
+          "Translation",
+          "Translocation"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What does bioinformatics combine computer science with?",
+        "answers": [
+          "Physics",
+          "Geology",
+          "Biology",
+          "Astronomy"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "What computational method compares multiple biological sequences to find alignments?",
+        "answers": [
+          "BLAST search",
+          "Multiple Sequence Alignment",
+          "Data parsing",
+          "Clustering"
+        ],
+        "correct": 1
+      }
+    ],
+    "Genetics": [
+      {
+        "question": "What represents the physical expression of a genetic trait?",
+        "answers": [
+          "Genotype",
+          "Phenotype",
+          "Allele",
+          "Haploid"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "Who formulated the laws of inheritance in genetics?",
+        "answers": [
+          "Charles Darwin",
+          "Gregor Mendel",
+          "Louis Pasteur",
+          "Watson and Crick"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "The first successfully cloned mammal, Dolly, was cloned from a...",
+        "answers": [
+          "Mouse",
+          "Sheep",
+          "Cow",
+          "Monkey"
+        ],
+        "correct": 1
+      },
+      {
+        "question": "What is a permanent alteration in the DNA sequence of a gene called?",
+        "answers": [
+          "Translation",
+          "Transcription",
+          "Mutation",
+          "Recombination"
+        ],
+        "correct": 2
+      },
+      {
+        "question": "How many chromosomes are present in a normal human somatic cell?",
+        "answers": [
+          "23",
+          "46",
+          "48",
+          "92"
+        ],
+        "correct": 1
+      }
+    ]
+  }
+}

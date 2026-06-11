@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname));
 
 const DB_FILE = path.join(__dirname, 'db.json');
+const QUESTIONS_FILE = path.join(__dirname, 'questions.json');
 
 // Helper to read DB
 function readDb() {
@@ -38,9 +39,41 @@ function writeDb(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+// Helper to read Questions
+function readQuestions() {
+  if (!fs.existsSync(QUESTIONS_FILE)) {
+    fs.writeFileSync(QUESTIONS_FILE, JSON.stringify({}));
+  }
+  try {
+    return JSON.parse(fs.readFileSync(QUESTIONS_FILE, 'utf8'));
+  } catch (e) {
+    return {};
+  }
+}
+
+// Helper to write Questions
+function writeQuestions(data) {
+  fs.writeFileSync(QUESTIONS_FILE, JSON.stringify(data, null, 2));
+}
+
 // GET all results
 app.get('/api/results', (req, res) => {
   res.json(readDb());
+});
+
+// GET all questions
+app.get('/api/questions', (req, res) => {
+  res.json(readQuestions());
+});
+
+// POST save entire questions bank
+app.post('/api/questions', (req, res) => {
+  try {
+    writeQuestions(req.body);
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to write questions database: " + e.message });
+  }
 });
 
 // POST create result (Start Quiz)
@@ -53,6 +86,7 @@ app.post('/api/results', (req, res) => {
     slot: req.body.slot,
     semester: req.body.semester,
     department: req.body.department || 'N/A',
+    subject: req.body.subject || 'N/A',
     score: req.body.score || 0,
     total: req.body.total || 25,
     percentage: req.body.percentage || "0.0",

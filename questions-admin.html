@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Question Bank Editor</title>
+
+<script>
+window.onerror = function(message, source, lineno, colno, error) {
+  var errorDiv = document.createElement('div');
+  errorDiv.style.position = 'fixed';
+  errorDiv.style.top = '0';
+  errorDiv.style.left = '0';
+  errorDiv.style.width = '100%';
+  errorDiv.style.background = '#ff5e62';
+  errorDiv.style.color = '#fff';
+  errorDiv.style.padding = '15px';
+  errorDiv.style.zIndex = '999999';
+  errorDiv.style.fontFamily = 'monospace';
+  errorDiv.style.fontSize = '14px';
+  errorDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+  errorDiv.innerHTML = '<strong>JS Error:</strong> ' + message + ' <br><strong>Source:</strong> ' + source + ' (Line: ' + lineno + ', Col: ' + colno + ')';
+  document.body.appendChild(errorDiv);
+  return false;
+};
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: radial-gradient(circle at 50% 50%, #171026 0%, #06020c 100%);
+    color: #f3f4f6;
+    min-height: 100vh;
+    padding: 40px 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Floating bg blobs */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+}
+.blob-1 {
+  top: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: #ffd700;
+}
+.blob-2 {
+  bottom: -10%;
+  right: -5%;
+  width: 450px;
+  height: 450px;
+  background: #8a2be2;
+}
+
+h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #ffffff 40%, #ffd700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+h1::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 3px;
+  background: linear-gradient(90deg, #8a2be2, #ffd700);
+  border-radius: 2px;
+  margin: 12px auto 0;
+  box-shadow: 0 0 10px rgba(138,43,226,0.4);
+}
+
+.admin-link-header {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+.header-btn {
+  font-family: 'Outfit', sans-serif;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.header-btn:hover, .header-btn.active {
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.06);
+  border-color: rgba(255, 215, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+}
+
+/* Glassmorphism Workspace layout */
+.workspace-container {
+    max-width: 1100px;
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
+}
+@media (max-width: 820px) {
+    .workspace-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: rgba(22, 14, 38, 0.7);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(214, 203, 247, 0.12);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.45);
+    height: fit-content;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.form-group label {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(214, 203, 247, 0.65);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.form-group select, .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(214, 203, 247, 0.12);
+    border-radius: 12px;
+    background: rgba(15, 11, 26, 0.5);
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.form-group select:focus, .form-group input:focus, .form-group textarea:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
+/* Premium Buttons */
+button {
+    background: linear-gradient(135deg, #d6cbf7, #ffd700);
+    color: #120924;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 12px rgba(214, 203, 247, 0.15);
+    width: 100%;
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(255, 215, 0, 0.3);
+    background: linear-gradient(135deg, #e4dcfa, #ffe875);
+}
+button:active {
+    transform: translateY(0);
+}
+
+button.danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+button.danger:hover {
+    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
+    background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+button.secondary {
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+}
+button.secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Question Workspace list */
+.q-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.q-list-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+}
+.q-count-badge {
+    background: rgba(214, 203, 247, 0.1);
+    color: #ffd700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+}
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Question Cards list styling */
+.questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.q-editor-card {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(214, 203, 247, 0.06);
+    border-radius: 16px;
+    padding: 22px;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+.q-editor-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(214, 203, 247, 0.15);
+}
+.q-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 15px;
+    line-height: 1.45;
+}
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+@media (max-width: 550px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.option-item {
+    background: rgba(15, 11, 26, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.75);
+}
+.option-item.correct {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.06);
+    color: #10b981;
+    font-weight: 600;
+}
+.correct-star {
+    font-size: 0.95rem;
+}
+
+.q-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding-top: 12px;
+}
+.q-actions button {
+    width: auto;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+}
+
+/* Save footer bar */
+.save-bar {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    background: rgba(22, 14, 38, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid #ffd700;
+    border-radius: 20px;
+    padding: 15px 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(255, 215, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    display: none; /* Shown dynamically when there are unsaved changes */
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes slideUp {
+    from { bottom: -80px; opacity: 0; }
+    to { bottom: 25px; opacity: 1; }
+}
+.save-bar-info {
+    text-align: left;
+}
+.save-bar-info h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    color: #ffd700;
+    font-weight: 700;
+}
+.save-bar-info p {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+.save-bar button {
+    width: auto;
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+/* Modal styles for Add/Edit Form */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(6, 2, 12, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-card {
+    background: rgba(22, 14, 38, 0.95);
+    border: 1px solid rgba(214, 203, 247, 0.16);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 580px;
+    padding: 35px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-card {
+    transform: translateY(0);
+}
+.modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
+    color: #fff;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 10px;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+.modal-footer button {
+    width: auto;
+}
+
+/* Login Page Wrapper */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+.login-card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+.login-card h2 {
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+.login-card p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+.login-card input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 16px;
+    background: rgba(15, 11, 26, 0.5);
+    color: #fff;
+    margin-bottom: 20px;
+    outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-align: center;
+    letter-spacing: 4px;
+    transition: all 0.3s ease;
+}
+.login-card input:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+}
+.login-error-msg {
+    color: #ff5e62;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    font-weight: 600;
+}
+.shake {
+    animation: shakeAnim 0.4s ease;
+}
+@keyframes shakeAnim {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.85rem;
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<h1>Vel Tech University<br>Question Bank Editor 📝</h1>
+
+<div class="admin-link-header">
+  <a href="admin.html" class="header-btn">📊 Leaderboard Admin</a>
+  <a href="questions-admin.html" class="header-btn active">📝 Question Editor Admin</a>
+  <a href="index.html" class="header-btn">🎓 Student Quiz Portal</a>
+</div>
+
+<!-- passcode login screen -->
+<div id="adminLogin" class="login-container">
+    <div class="login-card card">
+        <h2>🔒 Admin Access</h2>
+        <p>Please enter the administrator passcode to manage subjects and questions database.</p>
+        <input type="password" id="passcodeInput" placeholder="Enter Passcode" onkeydown="handleLoginKey(event)">
+        <button onclick="verifyPasscode()">Unlock Dashboard</button>
+        <p id="loginError" class="login-error-msg" style="display: none;">❌ Incorrect Passcode</p>
+    </div>
+</div>
+
+<!-- main editor panel -->
+<div id="adminDashboard" style="display: none;">
+    <div class="workspace-container">
+        
+        <!-- Left Panel: Subject Choice & Management -->
+        <div class="card">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; color: #fff; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">Select Scope</h3>
+            
+            <div class="form-group">
+                <label for="deptSelect">Department</label>
+                <select id="deptSelect" onchange="onDeptChange()">
+                    <option value="CSE">CSE (Computer Science)</option>
+                    <option value="ECE">ECE (Electronics & Comm)</option>
+                    <option value="CIVIL">CIVIL (Civil Engineering)</option>
+                    <option value="MECH">MECH (Mechanical Eng)</option>
+                    <option value="EEE">EEE (Electrical & Elect)</option>
+                    <option value="BIO TECH">BIO TECH (Biotechnology)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="subjectSelect">Subject</label>
+                <select id="subjectSelect" onchange="onSubjectChange()"></select>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                <button class="secondary" onclick="openAddSubjectModal()">➕ Add New Subject</button>
+                <button class="danger" id="deleteSubjectBtn" onclick="deleteSubject()">🗑 Delete Selected Subject</button>
+            </div>
+        </div>
+        
+        <!-- Right Panel: Questions editor workspace -->
+        <div class="card" style="min-height: 400px;">
+            <div class="q-list-header">
+                <h2>Questions</h2>
+                <span class="q-count-badge" id="qCountBadge">0 Questions</span>
+            </div>
+            
+            <div id="questionsContainer" class="questions-list">
+                <!-- Empty state shown by default -->
+                <div class="empty-state">
+                    <span class="empty-state-icon">📚</span>
+                    <p>Select a department and subject to load questions.</p>
+                </div>
+            </div>
+            
+            <button id="addQuestionBtn" class="secondary" onclick="openAddQuestionModal()" style="margin-top: 25px; display: none;">
+                ➕ Add New Question
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Global unsaved changes status bar -->
+<div id="saveBar" class="save-bar">
+    <div class="save-bar-info">
+        <h4>⚠️ Unsaved Changes</h4>
+        <p id="unsavedChangesText">You have 0 unsaved changes in memory.</p>
+    </div>
+    <button onclick="saveChangesToServer()">💾 Sync to Server</button>
+</div>
+
+<!-- Modal: Add/Edit Question Form -->
+<div id="questionModal" class="modal-overlay">
+    <div class="modal-card">
+        <h3 class="modal-title" id="modalTitle">Add New Question</h3>
+        
+        <div class="form-group">
+            <label for="qTextInput">Question Text</label>
+            <textarea id="qTextInput" rows="3" placeholder="Enter question description..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="opt0">Option 1</label>
+            <input type="text" id="opt0" placeholder="Enter option 1 text...">
+        </div>
+        <div class="form-group">
+            <label for="opt1">Option 2</label>
+            <input type="text" id="opt1" placeholder="Enter option 2 text...">
+        </div>
+        <div class="form-group">
+            <label for="opt2">Option 3</label>
+            <input type="text" id="opt2" placeholder="Enter option 3 text...">
+        </div>
+        <div class="form-group">
+            <label for="opt3">Option 4</label>
+            <input type="text" id="opt3" placeholder="Enter option 4 text...">
+        </div>
+        
+        <div class="form-group">
+            <label for="correctOptSelect">Correct Option</label>
+            <select id="correctOptSelect">
+                <option value="0">Option 1</option>
+                <option value="1">Option 2</option>
+                <option value="2">Option 3</option>
+                <option value="3">Option 4</option>
+            </select>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="secondary" onclick="closeQuestionModal()">Cancel</button>
+            <button onclick="saveQuestionItem()">Save Question</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Add Subject Form -->
+<div id="subjectModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 420px;">
+        <h3 class="modal-title">Add New Subject</h3>
+        
+        <div class="form-group">
+            <label for="subjectNameInput">Subject Name</label>
+            <input type="text" id="subjectNameInput" placeholder="e.g. Cloud Computing">
+        </div>
+        
+        <div class="modal-footer">
+            <button class="secondary" onclick="closeSubjectModal()">Cancel</button>
+            <button onclick="saveSubjectItem()">Add Subject</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+  &copy; 2026 Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology
+</div>
+
+<script>
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? (window.location.port === '8080' ? '' : 'http://localhost:8080')
+  : (window.location.protocol === 'file:') ? 'http://localhost:8080' : '';
+
+let questionBank = {};
+let hasChanges = false;
+let changesCount = 0;
+
+// Track active edit question indices
+let currentEditIndex = -1; 
+
+function setAuthorized(val) {
+  try {
+    sessionStorage.setItem("isAdminQuestionsAuthorized", val);
+  } catch (e) {
+    console.warn("sessionStorage not accessible:", e);
+  }
+}
+
+function isAuthorized() {
+  try {
+    return sessionStorage.getItem("isAdminQuestionsAuthorized") === "true";
+  } catch (e) {
+    return false;
+  }
+}
+
+const ADMIN_PASSCODE = "admin123";
+
+window.verifyPasscode = function() {
+  const input = document.getElementById("passcodeInput").value.trim();
+  const errorMsg = document.getElementById("loginError");
+  
+  if (input === ADMIN_PASSCODE) {
+    setAuthorized("true");
+    showDashboard();
+  } else {
+    errorMsg.style.display = "block";
+    const loginCard = document.querySelector(".login-card");
+    loginCard.classList.remove("shake");
+    void loginCard.offsetWidth; // trigger reflow
+    loginCard.classList.add("shake");
+  }
+};
+
+window.handleLoginKey = function(e) {
+  if (e.key === "Enter") {
+    verifyPasscode();
+  }
+};
+
+function showDashboard() {
+  document.getElementById("adminLogin").style.display = "none";
+  document.getElementById("adminDashboard").style.display = "block";
+  loadQuestionBank();
+}
+
+async function loadQuestionBank() {
+  try {
+    const response = await fetch(`${API_BASE}/api/questions`);
+    if (response.ok) {
+      questionBank = await response.json();
+      onDeptChange();
+    } else {
+      alert("Failed to load question bank, server returned status: " + response.status);
+    }
+  } catch (e) {
+    alert("Connection Error. Make sure local backend server is running on port 8080. " + e.message);
+  }
+}
+
+function onDeptChange() {
+  const dept = document.getElementById("deptSelect").value;
+  const subjects = Object.keys(questionBank[dept] || {});
+  
+  const subjectSelect = document.getElementById("subjectSelect");
+  subjectSelect.innerHTML = "";
+  
+  if (subjects.length > 0) {
+    subjects.forEach(sub => {
+      const opt = document.createElement("option");
+      opt.value = sub;
+      opt.textContent = sub;
+      subjectSelect.appendChild(opt);
+    });
+    document.getElementById("deleteSubjectBtn").disabled = false;
+    document.getElementById("addQuestionBtn").style.display = "block";
+    onSubjectChange();
+  } else {
+    const opt = document.createElement("option");
+    opt.textContent = "-- No Subjects --";
+    opt.value = "";
+    subjectSelect.appendChild(opt);
+    
+    document.getElementById("deleteSubjectBtn").disabled = true;
+    document.getElementById("addQuestionBtn").style.display = "none";
+    
+    document.getElementById("qCountBadge").innerText = "0 Questions";
+    document.getElementById("questionsContainer").innerHTML = `
+        <div class="empty-state">
+            <span class="empty-state-icon">❌</span>
+            <p>No subjects in this department yet. Tap "Add New Subject" to create one.</p>
+        </div>
+    `;
+  }
+}
+
+function onSubjectChange() {
+  const dept = document.getElementById("deptSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  
+  if (!subject) return;
+  
+  const list = questionBank[dept][subject] || [];
+  
+  document.getElementById("qCountBadge").innerText = `${list.length} Question${list.length !== 1 ? 's' : ''}`;
+  
+  const container = document.getElementById("questionsContainer");
+  container.innerHTML = "";
+  
+  if (list.length === 0) {
+    container.innerHTML = `
+        <div class="empty-state">
+            <span class="empty-state-icon">📝</span>
+            <p>No questions inside this subject. Add questions as many as you want!</p>
+        </div>
+    `;
+    return;
+  }
+  
+  list.forEach((q, idx) => {
+    const card = document.createElement("div");
+    card.className = "q-editor-card";
+    
+    let optionsHtml = "";
+    q.answers.forEach((ans, aIdx) => {
+      const isCorrect = aIdx === q.correct;
+      optionsHtml += `
+        <div class="option-item ${isCorrect ? 'correct' : ''}">
+            ${isCorrect ? '<span class="correct-star">🌟</span>' : '<span>⚪</span>'}
+            <span>${ans}</span>
+        </div>
+      `;
+    });
+    
+    card.innerHTML = `
+      <div class="q-text">${idx + 1}. ${q.question}</div>
+      <div class="options-grid">
+         ${optionsHtml}
+      </div>
+      <div class="q-actions">
+         <button class="secondary" onclick="openEditQuestionModal(${idx})">✏️ Edit</button>
+         <button class="danger" onclick="deleteQuestion(${idx})">🗑 Delete</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function markChanged() {
+  hasChanges = true;
+  changesCount++;
+  
+  document.getElementById("unsavedChangesText").innerText = `You have ${changesCount} unsaved change${changesCount !== 1 ? 's' : ''} in memory.`;
+  document.getElementById("saveBar").style.display = "flex";
+}
+
+// Subject creation CRUD
+window.openAddSubjectModal = function() {
+  document.getElementById("subjectNameInput").value = "";
+  document.getElementById("subjectModal").classList.add("active");
+};
+
+window.closeSubjectModal = function() {
+  document.getElementById("subjectModal").classList.remove("active");
+};
+
+window.saveSubjectItem = function() {
+  const input = document.getElementById("subjectNameInput").value.trim();
+  const dept = document.getElementById("deptSelect").value;
+  
+  if (input === "") {
+    alert("Please enter a subject name.");
+    return;
+  }
+  
+  if (!questionBank[dept]) {
+    questionBank[dept] = {};
+  }
+  
+  if (questionBank[dept][input]) {
+    alert("Subject already exists!");
+    return;
+  }
+  
+  // Create subject with empty array of questions
+  questionBank[dept][input] = [];
+  closeSubjectModal();
+  
+  markChanged();
+  
+  // Refresh select and pick the new subject
+  onDeptChange();
+  document.getElementById("subjectSelect").value = input;
+  onSubjectChange();
+};
+
+window.deleteSubject = function() {
+  const dept = document.getElementById("deptSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  
+  if (!subject) return;
+  
+  if (confirm(`Are you sure you want to delete "${subject}" and all its questions?`)) {
+    delete questionBank[dept][subject];
+    markChanged();
+    onDeptChange();
+  }
+};
+
+// Question CRUD
+window.openAddQuestionModal = function() {
+  currentEditIndex = -1;
+  document.getElementById("modalTitle").innerText = "Add New Question";
+  
+  document.getElementById("qTextInput").value = "";
+  document.getElementById("opt0").value = "";
+  document.getElementById("opt1").value = "";
+  document.getElementById("opt2").value = "";
+  document.getElementById("opt3").value = "";
+  document.getElementById("correctOptSelect").value = "0";
+  
+  document.getElementById("questionModal").classList.add("active");
+};
+
+window.openEditQuestionModal = function(idx) {
+  currentEditIndex = idx;
+  document.getElementById("modalTitle").innerText = "Edit Question";
+  
+  const dept = document.getElementById("deptSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  const q = questionBank[dept][subject][idx];
+  
+  document.getElementById("qTextInput").value = q.question;
+  document.getElementById("opt0").value = q.answers[0] || "";
+  document.getElementById("opt1").value = q.answers[1] || "";
+  document.getElementById("opt2").value = q.answers[2] || "";
+  document.getElementById("opt3").value = q.answers[3] || "";
+  document.getElementById("correctOptSelect").value = q.correct.toString();
+  
+  document.getElementById("questionModal").classList.add("active");
+};
+
+window.closeQuestionModal = function() {
+  document.getElementById("questionModal").classList.remove("active");
+};
+
+window.saveQuestionItem = function() {
+  const text = document.getElementById("qTextInput").value.trim();
+  const o0 = document.getElementById("opt0").value.trim();
+  const o1 = document.getElementById("opt1").value.trim();
+  const o2 = document.getElementById("opt2").value.trim();
+  const o3 = document.getElementById("opt3").value.trim();
+  const correct = parseInt(document.getElementById("correctOptSelect").value);
+  
+  if (!text || !o0 || !o1 || !o2 || !o3) {
+    alert("Please fill in the question text and all 4 option fields.");
+    return;
+  }
+  
+  const dept = document.getElementById("deptSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  
+  const qObj = {
+    question: text,
+    answers: [o0, o1, o2, o3],
+    correct: correct
+  };
+  
+  if (currentEditIndex === -1) {
+    // Add new
+    questionBank[dept][subject].push(qObj);
+  } else {
+    // Edit existing
+    questionBank[dept][subject][currentEditIndex] = qObj;
+  }
+  
+  closeQuestionModal();
+  markChanged();
+  onSubjectChange();
+};
+
+window.deleteQuestion = function(idx) {
+  const dept = document.getElementById("deptSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  
+  if (confirm("Are you sure you want to delete this question?")) {
+    questionBank[dept][subject].splice(idx, 1);
+    markChanged();
+    onSubjectChange();
+  }
+};
+
+window.saveChangesToServer = async function() {
+  try {
+    const response = await fetch(`${API_BASE}/api/questions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(questionBank)
+    });
+    
+    if (response.ok) {
+      alert("Successfully synced question bank to server file! 🎉");
+      hasChanges = false;
+      changesCount = 0;
+      document.getElementById("saveBar").style.display = "none";
+    } else {
+      alert("Failed to save changes, status: " + response.status);
+    }
+  } catch (e) {
+    alert("Error syncing to server: " + e.message);
+  }
+};
+
+// Check login authorizations
+if (isAuthorized()) {
+  showDashboard();
+} else {
+  document.getElementById("adminLogin").style.display = "flex";
+}
+</script>
+</body>
+</html>

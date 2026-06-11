@@ -1,185 +1,50 @@
-const questionBank = {
-  CSE: [
-    {question:"Which HTML tag is used to create a hyperlink?",answers:["&lt;a&gt;","&lt;link&gt;","&lt;href&gt;","&lt;hyper&gt;"],correct:0},
-    {question:"Which HTML tag defines an unordered list?",answers:["&lt;ul&gt;","&lt;ol&gt;","&lt;li&gt;","&lt;list&gt;"],correct:0},
-    {question:"Which HTML tag is used to insert an image?",answers:["&lt;image&gt;","&lt;img&gt;","&lt;pic&gt;","&lt;photo&gt;"],correct:1},
-    {question:"Which attribute specifies the URL of a link?",answers:["src","href","link","url"],correct:1},
-    {question:"Which tag defines the largest heading?",answers:["&lt;h6&gt;","&lt;h3&gt;","&lt;h1&gt;","&lt;heading&gt;"],correct:2},
-    {question:"Which CSS property changes text color?",answers:["font-color","text-style","color","background"],correct:2},
-    {question:"Which CSS property controls text size?",answers:["text-size","font-style","font-size","text-style"],correct:2},
-    {question:"Which CSS property changes background color?",answers:["background-color","bgcolor","color","background-style"],correct:0},
-    {question:"Which CSS property creates space inside element?",answers:["margin","padding","border","spacing"],correct:1},
-    {question:"Which CSS property controls layout?",answers:["display","layout","align","position"],correct:0},
-    {question:"Which symbol represents comment in JavaScript?",answers:["//","&lt;!-- --&gt;","#","**"],correct:0},
-    {question:"Which keyword declares variable?",answers:["var","int","string","define"],correct:0},
-    {question:"Which method prints in console?",answers:["console.write()","console.log()","print()","console.print()"],correct:1},
-    {question:"Which event occurs on click?",answers:["onclick","onhover","onmouse","onchange"],correct:0},
-    {question:"Which function shows alert box?",answers:["alert()","msg()","prompt()","show()"],correct:0},
-    {question:"Which HTML tag creates table row?",answers:["&lt;tr&gt;","&lt;td&gt;","&lt;row&gt;","&lt;th&gt;"],correct:0},
-    {question:"Which HTML tag creates table cell?",answers:["&lt;td&gt;","&lt;tr&gt;","&lt;th&gt;","&lt;cell&gt;"],correct:0},
-    {question:"Which CSS property makes text bold?",answers:["font-weight","text-bold","font-style","bold"],correct:0},
-    {question:"Which CSS property centers text?",answers:["text-align:center","align:center","text:center","center-text"],correct:0},
-    {question:"Which JS method selects element by ID?",answers:["getElement()","getElementById()","selectId()","queryId()"],correct:1},
-    {question:"Which HTML attribute provides image description?",answers:["alt","title","src","name"],correct:0},
-    {question:"Which CSS property adds shadow to text?",answers:["text-shadow","shadow-text","font-shadow","text-style"],correct:0},
-    {question:"Which keyword defines constant variable?",answers:["var","let","const","constant"],correct:2},
-    {question:"Which HTML tag creates a form?",answers:["&lt;form&gt;","&lt;input&gt;","&lt;fieldset&gt;","&lt;label&gt;"],correct:0},
-    {question:"Which JS function converts string to integer?",answers:["parseInt()","toInteger()","stringInt()","NumberInt()"],correct:0}
-  ],
-  ECE: [
-    {question:"Which material is most commonly used as a substrate in manufacturing integrated circuits?",answers:["Copper","Germanium","Silicon","Gallium Arsenide"],correct:2},
-    {question:"What does VLSI stand for in electronics?",answers:["Very Low Scale Integration","Very Large Scale Integration","Variable Linear System Integration","Volatile Large Storage Integrated"],correct:1},
-    {question:"Which CMOS transistor conducts when the input voltage is high (logic 1)?",answers:["NMOS","PMOS","Both NMOS and PMOS","Neither"],correct:0},
-    {question:"Which sequential circuit stores a single bit of binary data?",answers:["Decoder","Multiplexer","Flip-Flop","Encoder"],correct:2},
-    {question:"Which Hardware Description Language (HDL) is widely used for digital VLSI design?",answers:["Python","Verilog HDL","HTML","assembly"],correct:1},
-    {question:"Which logic gate yields output 1 only when all inputs are 0?",answers:["OR","AND","NOR","NAND"],correct:2},
-    {question:"How many select lines does an 8-to-1 multiplexer have?",answers:["1","2","3","4"],correct:2},
-    {question:"What are the main charge carriers in an n-type semiconductor?",answers:["Holes","Electrons","Neutrons","Protons"],correct:1},
-    {question:"What is the primary function of a depletion region in a PN junction?",answers:["To conduct current","To block charge diffusion","To generate light","To store energy"],correct:1},
-    {question:"The Boolean expression A + A' is simplified to...",answers:["0","1","A","A'"],correct:1},
-    {question:"Which theorem is widely used to simplify complex Boolean equations?",answers:["Newton's Theorem","Fourier's Theorem","De Morgan's Theorem","Taylor's Theorem"],correct:2},
-    {question:"How many flip-flops are required to design a decade counter?",answers:["2","3","4","5"],correct:2},
-    {question:"Which logic family is known for having the lowest static power dissipation?",answers:["TTL","ECL","CMOS","RTL"],correct:2},
-    {question:"An ideal operational amplifier (Op-Amp) has infinite...",answers:["Input impedance","Output impedance","Common-mode voltage","Slew rate limit"],correct:0},
-    {question:"Which processor component performs mathematical and logical operations?",answers:["Control Unit","Registers","Arithmetic Logic Unit (ALU)","Cache"],correct:2},
-    {question:"What is the resolution of an 8-bit Digital-to-Analog Converter (DAC)?",answers:["1 part in 15","1 part in 63","1 part in 255","1 part in 1023"],correct:2},
-    {question:"Propagation delay in modern VLSI circuits is typically measured in...",answers:["Seconds","Milliseconds","Microseconds","Nanoseconds"],correct:3},
-    {question:"What is setup time in digital flip-flops?",answers:["Clock pulse duration","Min time data must be stable before clock edge","Time to clear registers","Delay to settle output"],correct:1},
-    {question:"Which logic gate is widely referred to as a universal gate?",answers:["AND","OR","NAND","XOR"],correct:2},
-    {question:"In VLSI fabrication, photolithography is primarily used to...",answers:["Slice silicon ingots","Transfer circuit patterns to substrate","Clean chips","Package ICs"],correct:1},
-    {question:"What does the Fan-out of a logic gate represent?",answers:["Input capacity","Max number of similar gates it can drive","Cooling system speed","Thermal limit"],correct:1},
-    {question:"Which semiconductor device is designed to act as a voltage regulator?",answers:["Zener Diode","LED","Schottky Diode","Varactor Diode"],correct:0},
-    {question:"In a CMOS inverter logic gate, the PMOS transistor is connected to...",answers:["Ground","Vdd (Power Supply)","Input","Output only"],correct:1},
-    {question:"In a CMOS inverter logic gate, the NMOS transistor is connected to...",answers:["Vdd (Power Supply)","Ground","PMOS gate only","Bulk substrate only"],correct:1},
-    {question:"A digital electrical signal is characterized by having...",answers:["Infinite levels","Discrete, quantized levels","No noise","Continuous values"],correct:1}
-  ],
-  CIVIL: [
-    {question:"Which type of cement is most commonly used for general residential and commercial building construction?",answers:["Rapid Hardening Cement","White Cement","Ordinary Portland Cement (OPC)","High Alumina Cement"],correct:2},
-    {question:"Concrete is primarily a mixture of cement, water, and which other component?",answers:["Steel bars","Aggregates (sand & gravel)","Lime plaster","Wood fibers"],correct:1},
-    {question:"Why is reinforcement steel added inside concrete slabs?",answers:["To reduce weight","To increase tensile strength","To prevent water leakage","To accelerate drying time"],correct:1},
-    {question:"Which class of bricks exhibits the highest compressive strength and lowest water absorption?",answers:["First class bricks","Second class bricks","Third class bricks","Overburnt bricks"],correct:0},
-    {question:"What is the process of maintaining moisture in concrete after casting to develop maximum strength called?",answers:["Compaction","Batching","Curing","Segregation"],correct:2},
-    {question:"Which instrument is used to determine land elevations in surveying?",answers:["Compass","Dumpy Level","Planimeter","Alidade"],correct:1},
-    {question:"What property of fresh concrete does the slump test measure?",answers:["Compressive strength","Permeability","Workability","Density"],correct:2},
-    {question:"What is the primary load-bearing structural member of a roof truss?",answers:["Purlin","Tie beam","Principal Rafter","Sag tie"],correct:2},
-    {question:"What is the main component of standard structural mortar?",answers:["Cement, sand, and water","Plaster of Paris","Clay and gravel","Fly ash and lime"],correct:0},
-    {question:"What is the approximate unit weight of standard reinforced concrete?",answers:["15 kN/m3","20 kN/m3","25 kN/m3","30 kN/m3"],correct:2},
-    {question:"Which type of soil has the smallest particle sizes?",answers:["Sand","Silt","Gravel","Clay"],correct:3},
-    {question:"What is the standard length of a metric survey chain?",answers:["10m","20m","50m","100m"],correct:1},
-    {question:"Which instrument is used to measure wind speeds for bridge and structural assessments?",answers:["Anemometer","Hygrometer","Barometer","Rain Gauge"],correct:0},
-    {question:"Which binding material is commonly used in flexible road pavement construction?",answers:["Cement","Tar","Bitumen","Resin"],correct:2},
-    {question:"Which foundation is preferred for buildings on weak soil carrying heavy loads?",answers:["Strip Footing","Raft/Mat Foundation","Isolated Footing","Strap Footing"],correct:1},
-    {question:"A cantilever beam is supported at...",answers:["Both ends","One end only","The center only","Multiple intermediate rollers"],correct:1},
-    {question:"What is the maximum water absorption limit for a first-class brick after 24-hour immersion?",answers:["10%","20%","30%","40%"],correct:1},
-    {question:"Which construction material is manufactured by burning limestone in a kiln?",answers:["Gypsum","Plaster","Lime","Silica"],correct:2},
-    {question:"Which structural element primarily resists loads through bending stresses?",answers:["Column","Strut","Beam","Foundation pile"],correct:2},
-    {question:"In plane surveying, what is the line of collimation?",answers:["Plumb line","Line of sight through telescope center","Horizontal line","Ground level curve"],correct:1},
-    {question:"What is the initial setting time of standard Ordinary Portland Cement?",answers:["10 minutes","30 minutes","60 minutes","600 minutes"],correct:1},
-    {question:"What is the final setting time of standard Ordinary Portland Cement?",answers:["60 minutes","120 minutes","600 minutes","1200 minutes"],correct:2},
-    {question:"The vertical structural member of a building frame supporting slabs is a...",answers:["Beam","Column","Truss","Foundation footing"],correct:1},
-    {question:"What is the approximate modulus of elasticity of standard structural steel?",answers:["2 x 10^3 N/mm2","2 x 10^4 N/mm2","2 x 10^5 N/mm2","2 x 10^6 N/mm2"],correct:2},
-    {question:"Which material is most commonly used for installing a Damp Proof Course (DPC)?",answers:["Aggregate sand","Bitumen / Asphalt membrane","Lime wash","Concrete grout"],correct:1}
-  ],
-  MECH: [
-    {question:"Which law of thermodynamics defines the concept of entropy?",answers:["Zeroth Law","First Law","Second Law","Third Law"],correct:2},
-    {question:"What is the primary purpose of a flywheel in an internal combustion engine?",answers:["To cool the cylinders","To store and smooth energy delivery","To ignite the fuel mixture","To filter exhaust gases"],correct:1},
-    {question:"What is the ratio of shear stress to shear strain within elastic limits called?",answers:["Young's Modulus","Bulk Modulus","Modulus of Rigidity","Poisson's Ratio"],correct:2},
-    {question:"Which thermodynamic cycle represents the ideal standard for a simple steam power plant?",answers:["Carnot Cycle","Otto Cycle","Diesel Cycle","Rankine Cycle"],correct:3},
-    {question:"What type of load is a bridge subjected to when heavy vehicles drive across it?",answers:["Static Load","Live (Dynamic) Load","Torsional Load","Compressive Load"],correct:1},
-    {question:"What is the ratio of lateral strain to longitudinal strain in mechanics called?",answers:["Young's Modulus","Bulk Modulus","Poisson's Ratio","Rigidity Modulus"],correct:2},
-    {question:"The thermal efficiency of a Carnot heat engine depends directly on...",answers:["Working fluid density","Engine dimensions","Operating temperature limits","Fuel calorific value"],correct:2},
-    {question:"Which component is used to align and join two rotating shafts together?",answers:["Key","Spline","Coupling","Cotter"],correct:2},
-    {question:"Which engine component converts reciprocating piston motion into rotary shaft motion?",answers:["Connecting Rod","Crankshaft","Valves","Camshaft"],correct:1},
-    {question:"Fluid flow in which fluid particles move in smooth parallel paths is described as...",answers:["Turbulent","Laminar","Rotational","Transitional"],correct:1},
-    {question:"What is the unit of mechanical torque in the SI system?",answers:["Newton","Watt","Joule","Newton-meter"],correct:3},
-    {question:"What is the primary function of a governor in mechanical engines?",answers:["Smooth out cycles","Control mean speed under load variations","Store fuel","Lubricate bearings"],correct:1},
-    {question:"Which gear type is preferred to connect non-parallel, intersecting shafts?",answers:["Spur Gear","Helical Gear","Bevel Gear","Worm Gear"],correct:2},
-    {question:"Which heat transfer mechanism occurs through direct molecular contact?",answers:["Convection","Radiation","Conduction","Advection"],correct:2},
-    {question:"What is the SI unit of dynamic fluid viscosity?",answers:["Pascal","Pascal-second","Poiseuille-second","Joule-second"],correct:1},
-    {question:"What is the average carbon weight content in mild steel?",answers:["0.01% - 0.05%","0.15% - 0.30%","1.0% - 1.5%","2.0% - 4.0%"],correct:1},
-    {question:"At a point in a beam where the bending moment is maximum, the shear force is...",answers:["Maximum","Zero","Average","Constant"],correct:1},
-    {question:"Hooke's Law of mechanical elasticity remains valid up to the...",answers:["Yield point","Ultimate strength point","Limit of proportionality","Breaking point"],correct:2},
-    {question:"A boiler is a mechanical device designed primarily to...",answers:["Compress air","Condense refrigerant","Generate steam","Melt metals"],correct:2},
-    {question:"A fluid turbine is defined as a machine that...",answers:["Pumps liquids","Compresses gases","Converts fluid energy to rotary mechanical energy","Heats water"],correct:2},
-    {question:"The mass density of pure water is at its maximum temperature of...",answers:["0°C","4°C","100°C","-4°C"],correct:1},
-    {question:"Which instrument measures the volume flow rate of a fluid in a pipeline?",answers:["Manometer","Venturimeter","Thermocouple","Hydrometer"],correct:1},
-    {question:"The mechanical heat treatment process of heating steel and cooling it slowly is called...",answers:["Quenching","Tempering","Annealing","Nitriding"],correct:2},
-    {question:"Under identical compression ratios, which engine cycle has a higher thermal efficiency?",answers:["Otto Cycle","Diesel Cycle","Rankine Cycle","Brayton Cycle"],correct:0},
-    {question:"Which coupling is designed to join shafts with small parallel misalignments?",answers:["Universal Coupling","Flange Coupling","Oldham Coupling","Muff Coupling"],correct:2}
-  ],
-  EEE: [
-    {question:"What is the SI unit of electrical conductance?",answers:["Ohm","Siemens","Henry","Farad"],correct:1},
-    {question:"Which component in an AC power system steps up or steps down voltage levels?",answers:["Capacitor","Transformer","Inductor","Resistor"],correct:1},
-    {question:"Which passive component stores electrical energy in an electrostatic field?",answers:["Inductor","Resistor","Capacitor","Diode"],correct:2},
-    {question:"According to Ohm's Law, what is the equation for electrical voltage?",answers:["V = I / R","V = I * R","V = R / I","V = I + R"],correct:1},
-    {question:"Which electrical motor is highly preferred for constant speed industrial applications?",answers:["DC Series Motor","Universal Motor","Synchronous Motor","Repulsion Motor"],correct:2},
-    {question:"Which electrical device is used to convert AC voltage into DC voltage?",answers:["Inverter","Rectifier","Chopper","Cycloconverter"],correct:1},
-    {question:"What is the standard utility AC electricity frequency in India?",answers:["50 Hz","60 Hz","100 Hz","120 Hz"],correct:0},
-    {question:"Which component is designed to restrict current flow in an electrical circuit?",answers:["Capacitor","Inductor","Resistor","Diode"],correct:2},
-    {question:"Kirchhoff's Current Law (KCL) is based directly on the conservation of...",answers:["Energy","Charge","Momentum","Mass"],correct:1},
-    {question:"Kirchhoff's Voltage Law (KVL) is based directly on the conservation of...",answers:["Charge","Mass","Energy","Force"],correct:2},
-    {question:"The RMS value of a pure sinusoidal voltage wave with peak value Vm is...",answers:["Vm","Vm / 2","Vm / sqrt(2)","Vm * sqrt(2)"],correct:2},
-    {question:"What is the SI unit of electrical inductance?",answers:["Farad","Henry","Weber","Tesla"],correct:1},
-    {question:"Which electrical instrument is used to measure electrical active power?",answers:["Voltmeter","Ammeter","Wattmeter","Galvanometer"],correct:2},
-    {question:"Which three-terminal semiconductor device acts as a solid-state switch?",answers:["Diode","Resistor","Transistor","Capacitor"],correct:2},
-    {question:"In a balanced three-phase star (Y) connection, the line voltage is equal to...",answers:["Phase voltage","sqrt(3) * phase voltage","Phase voltage / sqrt(3)","3 * phase voltage"],correct:1},
-    {question:"Which energy losses in a transformer fluctuate based on load currents?",answers:["Hysteresis losses","Eddy current losses","Copper losses","Friction losses"],correct:2},
-    {question:"The steel core of a transformer is laminated to minimize...",answers:["Copper losses","Eddy current losses","Hysteresis losses","Windage losses"],correct:1},
-    {question:"An electrochemical battery stores electrical energy in the form of...",answers:["Electrostatic energy","Chemical energy","Magnetic energy","Nuclear energy"],correct:1},
-    {question:"What is the power factor of a pure resistive AC circuit?",answers:["0","0.5","1.0","0.8"],correct:2},
-    {question:"Which alloy metal is preferred for manufacturing heating elements?",answers:["Copper","Aluminum","Nichrome","Tungsten"],correct:2},
-    {question:"Which device protects electrical circuits by melting during overcurrent?",answers:["Relay","Fuse","Isolator","Transformer"],correct:1},
-    {question:"What is the SI unit of magnetic flux?",answers:["Tesla","Henry","Weber","Gauss"],correct:2},
-    {question:"An electrical alternator converts...",answers:["AC to DC","DC to AC","Mechanical energy to AC electrical energy","Electrical energy to heat"],correct:2},
-    {question:"Which testing instrument is used to measure high insulation resistances?",answers:["Multimeter","Megger","Wattmeter","Ammeter"],correct:1},
-    {question:"An electrical DC generator works on the fundamental principle of...",answers:["Lenz's Law","Faraday's Law of Electromagnetic Induction","Ampere's Law","Coulomb's Law"],correct:1}
-  ],
-  "BIO TECH": [
-    {question:"What does DNA stand for?",answers:["Deoxyribonucleic Acid","Ribonucleic Acid","Dicarbonate Nucleic Acid","Deoxygenated Ribose Acid"],correct:0},
-    {question:"Which organism is most commonly used as a host in recombinant DNA cloning experiments?",answers:["E. coli","Saccharomyces cerevisiae","Influenza virus","Amoeba"],correct:0},
-    {question:"Which enzyme acts as molecular glue to join two DNA fragments together?",answers:["Amylase","DNA Ligase","RNA Polymerase","Pepsin"],correct:1},
-    {question:"Which technique is used to amplify a specific sequence of DNA in vitro?",answers:["Gel Electrophoresis","Polymerase Chain Reaction (PCR)","Western Blotting","Chromatography"],correct:1},
-    {question:"What is a bioreactor used for in industrial biotechnology?",answers:["To store radioactive material","To cultivate cells under controlled conditions","To freeze biological samples","To measure atomic mass"],correct:1},
-    {question:"Which cellular organelle is referred to as the powerhouse of the cell?",answers:["Nucleus","Ribosome","Mitochondria","Golgi Apparatus"],correct:2},
-    {question:"The human genome consists of approximately how many DNA base pairs?",answers:["300,000","3 Million","3 Billion","30 Billion"],correct:2},
-    {question:"What is the biological process of translating mRNA into proteins called?",answers:["Transcription","Replication","Translation","Translocation"],correct:2},
-    {question:"What is the primary structural component of plant cell walls?",answers:["Starch","Chitin","Cellulose","Glycogen"],correct:2},
-    {question:"Which enzyme digests complex starch molecules into simple sugars?",answers:["Amylase","Lipase","Protease","Cellulase"],correct:0},
-    {question:"Which of the following vitamins is water-soluble?",answers:["Vitamin A","Vitamin D","Vitamin C","Vitamin K"],correct:2},
-    {question:"Which molecular laboratory technique separates DNA fragments based on size?",answers:["Spectrophotometry","Gel Electrophoresis","Centrifugation","Autoclaving"],correct:1},
-    {question:"What are the monomer building block units of structural proteins?",answers:["Nucleotides","Fatty Acids","Amino Acids","Monosaccharides"],correct:2},
-    {question:"A strand of DNA containing genes compiled from different organisms is called...",answers:["Mutated DNA","Recombinant DNA","Hybridized DNA","Cloned RNA"],correct:1},
-    {question:"What is the typical optimal pH level for most biological human enzymes?",answers:["2.0","5.5","7.4","9.8"],correct:2},
-    {question:"The first discovered antibiotic Penicillin was isolated from which biological source?",answers:["Bacteria","Fungus / Penicillium","Algae","Yeast"],correct:1},
-    {question:"What are the chemical products of yeast fermentation under anaerobic conditions?",answers:["Lactic acid and water","Ethanol and Carbon Dioxide","Acetic acid and oxygen","Methane and nitrogen"],correct:1},
-    {question:"Which type of cell division yields four non-identical haploid gamete cells?",answers:["Mitosis","Meiosis","Binary Fission","Budding"],correct:1},
-    {question:"Which chemical element is structurally present in all organic compounds?",answers:["Oxygen","Nitrogen","Carbon","Sulfur"],correct:2},
-    {question:"The first successfully cloned mammal, Dolly, was cloned from a...",answers:["Mouse","Sheep","Cow","Monkey"],correct:1},
-    {question:"Which hormone is responsible for regulating glucose levels in human blood?",answers:["Thyroxine","Adrenaline","Insulin","Estrogen"],correct:2},
-    {question:"Which plant cell organelle is responsible for performing photosynthesis?",answers:["Mitochondria","Chloroplast","Vacuole","Lysosome"],correct:1},
-    {question:"What is the primary biological site of protein synthesis inside a cell?",answers:["Ribosome","Lysosome","Nucleolus","Centrosome"],correct:0},
-    {question:"The mapping and determination of the complete genetic material of an organism is...",answers:["Transcription","Gene Editing","Genome Sequencing","Hybridization"],correct:2},
-    {question:"Which biological vector is widely utilized in plant genetic engineering?",answers:["Bacteriophage","Ti Plasmid of Agrobacterium","Cosmid","YAC"],correct:1}
-  ]
-};
+let questionBank = {};
 
-let questions = []; // Dynamic questions array loaded based on department choice
+let questions = []; // Dynamic questions array loaded based on subject choice
 let currentQuestion = 0;
 let score = 0;
-let timeLeft = 30;
+let timeLeft = 15;
 let timer;
 let userName = "";
 let VTUNo = "";
 let slotNo = "";
 let semester = "";
 let selectedDept = "";
+let selectedSubject = "";
 
 let userAnswers = [];
 let currentDocId = "";
+let quizStartTime = 0;
+let quizDurationText = "0m 0s";
 
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? (window.location.port === '8080' ? '' : 'http://localhost:8080')
-  : '';
+  : (window.location.protocol === 'file:') ? 'http://localhost:8080' : '';
+
+async function initQuestionBank() {
+  try {
+    const response = await fetch(`${API_BASE}/api/questions`);
+    if (response.ok) {
+      questionBank = await response.json();
+      console.log("Question bank loaded dynamically from server.");
+      return;
+    }
+  } catch (e) {
+    console.error("Error loading questions from API, attempting fallback:", e);
+  }
+
+  // Fallback to loading static questions.json file directly from root (great for static hosting like Netlify)
+  try {
+    const fallbackResponse = await fetch('questions.json');
+    if (fallbackResponse.ok) {
+      questionBank = await fallbackResponse.json();
+      console.log("Question bank loaded from static questions.json fallback.");
+    }
+  } catch (err) {
+    console.error("Failed to load question bank from static fallback:", err);
+  }
+}
+initQuestionBank();
 
 // Dynamic Certificate Text Mappings
 const schoolNames = {
@@ -213,16 +78,120 @@ const quizNames = {
 function selectDepartment(deptCode) {
   selectedDept = deptCode;
   
-  // Dynamic question load
-  questions = questionBank[deptCode] || questionBank.CSE;
-  userAnswers = new Array(questions.length).fill(null);
+  // Clear any existing name floats
+  document.querySelectorAll(".name-float").forEach(el => el.remove());
   
   const deptBox = document.getElementById("deptBox");
-  const startBox = document.getElementById("startBox");
+  const subjectBox = document.getElementById("subjectBox");
+  const subjectGrid = document.getElementById("subjectGrid");
+  
+  // Get list of subjects for selected department
+  const subjects = Object.keys(questionBank[deptCode] || {});
+  
+  // Populate subject grid
+  subjectGrid.innerHTML = "";
+  subjects.forEach(subjectName => {
+    const btn = document.createElement("div");
+    btn.className = "dept-btn";
+    btn.onclick = () => selectSubject(subjectName);
+    
+    // Choose a nice generic icon/emoji based on subject name
+    let icon = "📚";
+    if (subjectName.includes("SQL") || subjectName.includes("Database")) icon = "🗄️";
+    else if (subjectName.includes("Web") || subjectName.includes("HTML")) icon = "🌐";
+    else if (subjectName.includes("Java")) icon = "☕";
+    else if (subjectName.includes("Python")) icon = "🐍";
+    else if (subjectName.includes("Networks") || subjectName.includes("Signal")) icon = "📡";
+    else if (subjectName.includes("Big Data") || subjectName.includes("Analytics")) icon = "📊";
+    else if (subjectName.includes("Machine Learning") || subjectName.includes("AI") || subjectName.includes("Artificial")) icon = "🤖";
+    else if (subjectName.includes("Visualisation") || subjectName.includes("Microbiology")) icon = "🔬";
+    else if (subjectName.includes("Operating System") || subjectName.includes("VLSI") || subjectName.includes("Digital")) icon = "💻";
+    else if (subjectName.includes("Embedded") || subjectName.includes("Microprocessors") || subjectName.includes("Circuit")) icon = "🔌";
+    else if (subjectName.includes("Thermodynamics") || subjectName.includes("Power") || subjectName.includes("Electrical")) icon = "⚡";
+    else if (subjectName.includes("Concrete") || subjectName.includes("Structural") || subjectName.includes("Geotechnical")) icon = "🏗️";
+    else if (subjectName.includes("Surveying") || subjectName.includes("Transportation") || subjectName.includes("Design")) icon = "📐";
+    else if (subjectName.includes("Biochemistry") || subjectName.includes("DNA") || subjectName.includes("Genetics")) icon = "🧬";
+    
+    btn.innerHTML = `
+      <span class="dept-icon">${icon}</span>
+      <span class="dept-name">${subjectName}</span>
+      <span class="dept-desc">Tap to start quiz</span>
+    `;
+    subjectGrid.appendChild(btn);
+  });
   
   deptBox.classList.add("slide-out");
   setTimeout(() => {
     deptBox.style.display = "none";
+    subjectBox.style.display = "flex";
+    subjectBox.classList.remove("slide-out");
+    subjectBox.classList.add("slide-in");
+    setTimeout(() => {
+      subjectBox.classList.remove("slide-in");
+    }, 250);
+  }, 250);
+}
+
+/* BACK TO DEPARTMENTS */
+function backToDepartments() {
+  const deptBox = document.getElementById("deptBox");
+  const subjectBox = document.getElementById("subjectBox");
+  
+  subjectBox.classList.add("slide-out");
+  setTimeout(() => {
+    subjectBox.style.display = "none";
+    deptBox.style.display = "flex";
+    deptBox.classList.remove("slide-out");
+    deptBox.classList.add("slide-in");
+    setTimeout(() => {
+      deptBox.classList.remove("slide-in");
+    }, 250);
+  }, 250);
+}
+
+/* BACK TO SUBJECTS */
+function backToSubjects() {
+  const startBox = document.getElementById("startBox");
+  const subjectBox = document.getElementById("subjectBox");
+  
+  // Expand container back to wide for grid display
+  const container = document.querySelector(".container");
+  if (container) container.classList.add("wide");
+  
+  startBox.classList.add("slide-out");
+  setTimeout(() => {
+    startBox.style.display = "none";
+    subjectBox.style.display = "flex";
+    subjectBox.classList.remove("slide-out");
+    subjectBox.classList.add("slide-in");
+    setTimeout(() => {
+      subjectBox.classList.remove("slide-in");
+    }, 250);
+  }, 250);
+}
+
+/* SELECT SUBJECT */
+function selectSubject(subjectName) {
+  selectedSubject = subjectName;
+  
+  // Set questions for this specific subject
+  questions = questionBank[selectedDept][selectedSubject] || [];
+  userAnswers = new Array(questions.length).fill(null);
+  
+  const subjectBox = document.getElementById("subjectBox");
+  const startBox = document.getElementById("startBox");
+  const selectionSummary = document.getElementById("selectionSummary");
+  
+  // Set text summary (e.g. "CSE - Java Programming")
+  selectionSummary.innerText = `${selectedDept} ➔ ${selectedSubject}`;
+  
+  // Shrink the glassmorphism container for the details form
+  const container = document.querySelector(".container");
+  if (container) container.classList.remove("wide");
+  
+  subjectBox.classList.add("slide-out");
+  setTimeout(() => {
+    subjectBox.style.display = "none";
     startBox.style.display = "flex";
     startBox.classList.remove("slide-out");
     startBox.classList.add("slide-in");
@@ -273,6 +242,8 @@ VTUNo = vtuInput.value.trim();
 slotNo = slotInput.value.trim();
 semester = document.getElementById("Semester").value.trim();
 
+quizStartTime = Date.now();
+
 // Start dynamic background floating user name effect
 startFloatingNameEffect(userName);
 
@@ -287,6 +258,7 @@ try {
       slot: slotNo,
       semester: semester,
       department: selectedDept,
+      subject: selectedSubject,
       score: 0,
       total: questions.length,
       percentage: "0.0",
@@ -311,7 +283,7 @@ function loadQuestion(){
 
 clearInterval(timer);
 
-timeLeft = 30;
+timeLeft = 15;
 
 const progressPath = document.getElementById("timerProgress");
 const timerText = document.getElementById("timerText");
@@ -331,13 +303,13 @@ timer = setInterval(()=>{
 timeLeft--;
 
 if(progressPath && timerText) {
-  const percent = (timeLeft / 30) * 100;
+  const percent = (timeLeft / 15) * 100;
   progressPath.style.strokeDasharray = `${percent}, 100`;
   timerText.innerText = timeLeft;
   
-  if (timeLeft > 15) {
+  if (timeLeft > 10) {
     progressPath.style.stroke = "#ffffff"; // pure white
-  } else if (timeLeft > 7) {
+  } else if (timeLeft > 4) {
     progressPath.style.stroke = "#d6cbf7"; // lavender
   } else {
     progressPath.style.stroke = "#ffd700"; // gold warning
@@ -345,7 +317,7 @@ if(progressPath && timerText) {
 }
 
 if(timeLeft === 0){
-nextQuestion();
+nextQuestion(true);
 }
 },1000);
 
@@ -398,9 +370,9 @@ document.querySelectorAll(".answer")[index].classList.add("selected");
 }
 
 /* NEXT WITH TRANSITION */
-function nextQuestion(){
+function nextQuestion(isTimeUp = false){
 
-if(userAnswers[currentQuestion] === null){
+if(!isTimeUp && userAnswers[currentQuestion] === null){
 const quizBox = document.getElementById("quizBox");
 quizBox.classList.remove("shake");
 void quizBox.offsetWidth; // trigger reflow
@@ -459,6 +431,35 @@ score++;
 });
 
 let percentage = (score/questions.length)*100;
+
+// Compute duration
+const durationMs = Date.now() - quizStartTime;
+const mins = Math.floor(durationMs / 60000);
+quizDurationText = mins > 0 ? `${mins} Minute${mins !== 1 ? 's' : ''}` : `1 Minute`;
+
+// Calculate rank dynamically
+let rankText = "Top 50%";
+try {
+  const response = await fetch(`${API_BASE}/api/results`);
+  if (response.ok) {
+    const results = await response.json();
+    const completedResults = results.filter(r => r.department === selectedDept && r.status === "Completed");
+    const scores = completedResults.map(r => Number(r.score));
+    scores.push(score); // include current score
+    const lowerScores = scores.filter(s => s < score).length;
+    const equalScores = scores.filter(s => s === score).length;
+    const percentile = ((lowerScores + 0.5 * equalScores) / scores.length) * 100;
+    const topPct = 100 - percentile;
+    rankText = `Top ${Math.max(1, Math.round(topPct))}%`;
+  }
+} catch (e) {
+  console.error("Error calculating rank:", e);
+  if (percentage >= 90) rankText = "Top 5%";
+  else if (percentage >= 80) rankText = "Top 15%";
+  else if (percentage >= 70) rankText = "Top 30%";
+  else rankText = "Top 50%";
+}
+window.quizRankText = rankText;
 
 let resultText = userName + " scored " + score + " / " + questions.length +
 " (" + percentage.toFixed(1) + "%)";
@@ -544,6 +545,7 @@ try{
         slot: slotNo,
         semester: semester,
         department: selectedDept,
+        subject: selectedSubject,
         score: score,
         total: questions.length,
         percentage: percentage.toFixed(1),
@@ -554,7 +556,6 @@ try{
   }
 }catch(e){
   console.error("Local API Save Error:", e);
-  alert("Error saving quiz result to database: " + e.message);
 }
 }
 
@@ -568,10 +569,18 @@ const doc = new jsPDF("landscape");
 const pageWidth = doc.internal.pageSize.width;
 const pageHeight = doc.internal.pageSize.height;
 
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+const displayName = toTitleCase(userName);
+
 // Fetch dynamic, changeable text fields based on student department
 const schoolText = schoolNames[selectedDept] || "School of Computing";
 const deptText = deptNames[selectedDept] || "Department of Computer Science and Engineering";
-const quizText = quizNames[selectedDept] || "Dynamic HTML Quiz Assessment";
+const quizTitleText = `${selectedSubject} Quiz Assessment`;
 
 // ===== Certificate Border =====
 doc.setDrawColor(0,102,204);
@@ -583,15 +592,18 @@ doc.rect(15,15,pageWidth-30,pageHeight-30);
 
 // ===== Vel Tech Logo =====
 const logoImg = document.getElementById("velTechLogo");
-if (logoImg) {
-  doc.addImage(logoImg, "PNG", 20, 18, 35, 20);
-} else {
-  doc.addImage("VelTech.png", "PNG", 20, 18, 35, 20);
+if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
+  try {
+    doc.addImage(logoImg, "PNG", 20, 18, 35, 20);
+  } catch (err) {
+    console.error("Error drawing logo to PDF:", err);
+  }
 }
 
 // ===== University Name =====
 doc.setFont("Times","Bold");
 doc.setFontSize(20);
+doc.setTextColor(0,0,0);
 
 doc.text(
 "Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology",
@@ -647,7 +659,7 @@ doc.setFontSize(32);
 doc.setTextColor(0,102,204);
 
 doc.text(
-userName.toUpperCase(),
+displayName.toUpperCase(),
 pageWidth/2,
 110,
 {align:"center"}
@@ -664,9 +676,9 @@ pageWidth/2,
 {align:"center"}
 );
 
-// ===== Description (Changeable) =====
+// ===== Description (Changeable with Subject) =====
 doc.text(
-"For successfully completing the " + quizText,
+"For successfully completing the " + quizTitleText,
 pageWidth/2,
 142,
 {align:"center"}
@@ -887,6 +899,9 @@ function startFloatingNameEffect(name) {
 
 // ===== Global Window bindings for HTML event handlers =====
 window.selectDepartment = selectDepartment;
+window.backToDepartments = backToDepartments;
+window.backToSubjects = backToSubjects;
+window.selectSubject = selectSubject;
 window.startQuiz = startQuiz;
 window.nextQuestion = nextQuestion;
 window.previousQuestion = previousQuestion;
