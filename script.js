@@ -1,4 +1,5 @@
-let questionBank = {};
+let questionBank = null;
+let questionBankPromise = null;
 
 let questions = []; // Dynamic questions array loaded based on subject choice
 let currentQuestion = 0;
@@ -22,27 +23,33 @@ const API_BASE = (window.location.hostname === 'localhost' || window.location.ho
   : (window.location.protocol === 'file:') ? 'http://localhost:8080' : '';
 
 async function initQuestionBank() {
-  try {
-    const response = await fetch(`${API_BASE}/api/questions`);
-    if (response.ok) {
-      questionBank = await response.json();
-      console.log("Question bank loaded dynamically from server.");
-      return;
+  questionBankPromise = (async () => {
+    try {
+      const response = await fetch(`${API_BASE}/api/questions`);
+      if (response.ok) {
+        questionBank = await response.json();
+        console.log("Question bank loaded dynamically from server.");
+        return questionBank;
+      }
+    } catch (e) {
+      console.error("Error loading questions from API, attempting fallback:", e);
     }
-  } catch (e) {
-    console.error("Error loading questions from API, attempting fallback:", e);
-  }
 
-  // Fallback to loading static questions.json file directly from root (great for static hosting like Netlify)
-  try {
-    const fallbackResponse = await fetch('/questions.json');
-    if (fallbackResponse.ok) {
-      questionBank = await fallbackResponse.json();
-      console.log("Question bank loaded from static questions.json fallback.");
+    // Fallback to loading static questions.json file directly from root (great for static hosting like Netlify)
+    try {
+      const fallbackResponse = await fetch('/questions.json');
+      if (fallbackResponse.ok) {
+        questionBank = await fallbackResponse.json();
+        console.log("Question bank loaded from static questions.json fallback.");
+        return questionBank;
+      }
+    } catch (err) {
+      console.error("Failed to load question bank from static fallback:", err);
     }
-  } catch (err) {
-    console.error("Failed to load question bank from static fallback:", err);
-  }
+    questionBank = {};
+    return questionBank;
+  })();
+  return questionBankPromise;
 }
 initQuestionBank();
 
@@ -75,7 +82,7 @@ const quizNames = {
 };
 
 /* SELECT DEPARTMENT */
-function selectDepartment(deptCode) {
+async function selectDepartment(deptCode) {
   selectedDept = deptCode;
   
   // Clear any existing name floats
@@ -85,40 +92,59 @@ function selectDepartment(deptCode) {
   const subjectBox = document.getElementById("subjectBox");
   const subjectGrid = document.getElementById("subjectGrid");
   
+  // Wait for questionBank to load if it hasn't completed yet
+  if (!questionBank && questionBankPromise) {
+    subjectGrid.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: rgba(214, 203, 247, 0.75);">
+        <span class="spinner" style="font-size: 2rem; display: block; margin-bottom: 10px;">⏳</span>
+        <span>Loading subjects database...</span>
+      </div>
+    `;
+    await questionBankPromise;
+  }
+  
   // Get list of subjects for selected department
   const subjects = Object.keys(questionBank[deptCode] || {});
   
   // Populate subject grid
   subjectGrid.innerHTML = "";
-  subjects.forEach(subjectName => {
-    const btn = document.createElement("div");
-    btn.className = "dept-btn";
-    btn.onclick = () => selectSubject(subjectName);
-    
-    // Choose a nice generic icon/emoji based on subject name
-    let icon = "📚";
-    if (subjectName.includes("SQL") || subjectName.includes("Database")) icon = "🗄️";
-    else if (subjectName.includes("Web") || subjectName.includes("HTML")) icon = "🌐";
-    else if (subjectName.includes("Java")) icon = "☕";
-    else if (subjectName.includes("Python")) icon = "🐍";
-    else if (subjectName.includes("Networks") || subjectName.includes("Signal")) icon = "📡";
-    else if (subjectName.includes("Big Data") || subjectName.includes("Analytics")) icon = "📊";
-    else if (subjectName.includes("Machine Learning") || subjectName.includes("AI") || subjectName.includes("Artificial")) icon = "🤖";
-    else if (subjectName.includes("Visualisation") || subjectName.includes("Microbiology")) icon = "🔬";
-    else if (subjectName.includes("Operating System") || subjectName.includes("VLSI") || subjectName.includes("Digital")) icon = "💻";
-    else if (subjectName.includes("Embedded") || subjectName.includes("Microprocessors") || subjectName.includes("Circuit")) icon = "🔌";
-    else if (subjectName.includes("Thermodynamics") || subjectName.includes("Power") || subjectName.includes("Electrical")) icon = "⚡";
-    else if (subjectName.includes("Concrete") || subjectName.includes("Structural") || subjectName.includes("Geotechnical")) icon = "🏗️";
-    else if (subjectName.includes("Surveying") || subjectName.includes("Transportation") || subjectName.includes("Design")) icon = "📐";
-    else if (subjectName.includes("Biochemistry") || subjectName.includes("DNA") || subjectName.includes("Genetics")) icon = "🧬";
-    
-    btn.innerHTML = `
-      <span class="dept-icon">${icon}</span>
-      <span class="dept-name">${subjectName}</span>
-      <span class="dept-desc">Tap to start quiz</span>
+  if (subjects.length === 0) {
+    subjectGrid.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: rgba(214, 203, 247, 0.65);">
+        <span>No subjects found for this department.</span>
+      </div>
     `;
-    subjectGrid.appendChild(btn);
-  });
+  } else {
+    subjects.forEach(subjectName => {
+      const btn = document.createElement("div");
+      btn.className = "dept-btn";
+      btn.onclick = () => selectSubject(subjectName);
+      
+      // Choose a nice generic icon/emoji based on subject name
+      let icon = "📚";
+      if (subjectName.includes("SQL") || subjectName.includes("Database")) icon = "🗄️";
+      else if (subjectName.includes("Web") || subjectName.includes("HTML")) icon = "🌐";
+      else if (subjectName.includes("Java")) icon = "☕";
+      else if (subjectName.includes("Python")) icon = "🐍";
+      else if (subjectName.includes("Networks") || subjectName.includes("Signal")) icon = "📡";
+      else if (subjectName.includes("Big Data") || subjectName.includes("Analytics")) icon = "📊";
+      else if (subjectName.includes("Machine Learning") || subjectName.includes("AI") || subjectName.includes("Artificial")) icon = "🤖";
+      else if (subjectName.includes("Visualisation") || subjectName.includes("Microbiology")) icon = "🔬";
+      else if (subjectName.includes("Operating System") || subjectName.includes("VLSI") || subjectName.includes("Digital")) icon = "💻";
+      else if (subjectName.includes("Embedded") || subjectName.includes("Microprocessors") || subjectName.includes("Circuit")) icon = "🔌";
+      else if (subjectName.includes("Thermodynamics") || subjectName.includes("Power") || subjectName.includes("Electrical")) icon = "⚡";
+      else if (subjectName.includes("Concrete") || subjectName.includes("Structural") || subjectName.includes("Geotechnical")) icon = "🏗️";
+      else if (subjectName.includes("Surveying") || subjectName.includes("Transportation") || subjectName.includes("Design")) icon = "📐";
+      else if (subjectName.includes("Biochemistry") || subjectName.includes("DNA") || subjectName.includes("Genetics")) icon = "🧬";
+      
+      btn.innerHTML = `
+        <span class="dept-icon">${icon}</span>
+        <span class="dept-name">${subjectName}</span>
+        <span class="dept-desc">Tap to start quiz</span>
+      `;
+      subjectGrid.appendChild(btn);
+    });
+  }
   
   deptBox.classList.add("slide-out");
   setTimeout(() => {
