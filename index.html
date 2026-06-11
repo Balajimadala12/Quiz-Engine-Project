@@ -2,105 +2,889 @@
 <html>
 
 <head>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Automated Quiz Engine</title>
 
-<link rel="stylesheet" href="style.css">
+<script>
+window.onerror = function(message, source, lineno, colno, error) {
+  var errorDiv = document.createElement('div');
+  errorDiv.style.position = 'fixed';
+  errorDiv.style.top = '0';
+  errorDiv.style.left = '0';
+  errorDiv.style.width = '100%';
+  errorDiv.style.background = '#ff5e62';
+  errorDiv.style.color = '#fff';
+  errorDiv.style.padding = '15px';
+  errorDiv.style.zIndex = '999999';
+  errorDiv.style.fontFamily = 'monospace';
+  errorDiv.style.fontSize = '14px';
+  errorDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+  errorDiv.innerHTML = '<strong>JS Error:</strong> ' + message + ' <br><strong>Source:</strong> ' + source + ' (Line: ' + lineno + ', Col: ' + colno + ')';
+  document.body.appendChild(errorDiv);
+  return false;
+};
+</script>
 
+<!-- Google Fonts & jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: radial-gradient(circle at 50% 50%, #15092a 0%, #06020c 100%);
+  color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background floating blobs (Lavender & Gold) */
+.bg-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.14;
+  will-change: transform;
+}
+
+.blob-1 {
+  top: -10%;
+  left: -5%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0) 70%);
+  animation: float-blob-1 25s infinite alternate ease-in-out;
+}
+
+.blob-2 {
+  bottom: -15%;
+  right: -5%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, #8a2be2 0%, rgba(138, 43, 226, 0) 70%);
+  animation: float-blob-2 30s infinite alternate ease-in-out;
+}
+
+.blob-3 {
+  top: 40%;
+  left: 30%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #ffd700 0%, rgba(255, 215, 0, 0) 70%);
+  animation: float-blob-3 20s infinite alternate ease-in-out;
+}
+
+@keyframes float-blob-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(80px, 40px) scale(1.1); }
+}
+
+@keyframes float-blob-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-90px, -60px) scale(1.15); }
+}
+
+@keyframes float-blob-3 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, -80px) scale(0.9); }
+}
+
+/* Glassmorphism Container with lavender-gold details */
+.container {
+  background: rgba(22, 14, 38, 0.65);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 45px 35px;
+  border-radius: 28px;
+  border: 1px solid rgba(214, 203, 247, 0.15);
+  box-shadow: 
+    0 24px 50px rgba(0, 0, 0, 0.45),
+    inset 0 0 20px rgba(255, 255, 255, 0.01);
+  width: 100%;
+  max-width: 490px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.55),
+    inset 0 0 24px rgba(255, 255, 255, 0.02);
+}
+
+.main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff 25%, #d6cbf7 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
+  letter-spacing: -0.5px;
+}
+
+.main-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #d6cbf7, #ffd700);
+  border-radius: 2px;
+  margin: 12px auto 0;
+  box-shadow: 0 0 10px rgba(214, 203, 247, 0.35);
+}
+
+/* SVG Illustration on Start Screen (Lavender & Gold) */
+.svg-illustration {
+  margin: 5px auto 25px;
+  width: 160px;
+  height: 105px;
+  perspective: 600px;
+}
+
+.svg-illustration svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 20px rgba(214, 203, 247, 0.2));
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.container:hover .svg-illustration svg {
+  transform: rotateY(12deg) rotateX(6deg) translateZ(15px);
+}
+
+.float-star {
+  animation: floating-item 2.8s infinite alternate ease-in-out;
+}
+.float-circle {
+  animation: floating-item 3.2s infinite alternate ease-in-out 1s;
+}
+.float-triangle {
+  animation: floating-item 2.4s infinite alternate ease-in-out 0.5s;
+}
+
+@keyframes floating-item {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-7px) rotate(12deg); }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Floating Input Design */
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1.5px solid rgba(214, 203, 247, 0.12);
+  border-radius: 14px;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.015);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  outline: none;
+}
+
+.input-group label {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(214, 203, 247, 0.4);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-size: 15px;
+}
+
+/* Input states for float effect */
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 11px;
+  color: #ffd700;
+  background: #171026;
+  padding: 0 8px;
+  left: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.input-group input:focus {
+  border-color: #ffd700;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.2);
+}
+
+.input-group input[readonly] {
+  color: rgba(214, 203, 247, 0.85);
+  border-color: rgba(214, 203, 247, 0.2);
+  background: rgba(214, 203, 247, 0.02);
+  cursor: not-allowed;
+}
+
+/* Premium Buttons (Lavender to Goldish Gradient) */
+button {
+  background: linear-gradient(135deg, #d6cbf7, #ffd700);
+  color: #120924;
+  border: none;
+  padding: 16px;
+  width: 100%;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 18px rgba(214, 203, 247, 0.25);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.35);
+  background: linear-gradient(135deg, #e4dcfa, #ffe875);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Quiz UI Top section */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#questionNumber {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(214, 203, 247, 0.1);
+}
+
+/* Circular SVG Countdown Timer */
+.timer-container {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 3.5;
+}
+
+.timer-progress {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s linear, stroke 0.3s ease;
+}
+
+#timerText {
+  position: absolute;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Progress bar container */
+.progress-container {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+#progressBar {
+  height: 7px;
+  background: linear-gradient(90deg, #d6cbf7, #ffd700);
+  width: 0%;
+  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 0 10px rgba(214,203,247,0.3);
+}
+
+/* Quiz content transitions */
+.quiz-content-wrapper {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.quiz-content-wrapper.slide-out {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.quiz-content-wrapper.slide-in {
+  opacity: 0;
+  transform: translateX(20px);
+  animation: slideInClean 0.25s forwards ease;
+}
+
+@keyframes slideInClean {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Question style */
+#question {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 25px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+/* Answers Layout */
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.answer {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: rgba(255, 255, 255, 0.015);
+  padding: 16px 18px 16px 48px;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 1.5px solid rgba(214, 203, 247, 0.06);
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  font-size: 15px;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Custom radio indicator */
+.answer::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(214, 203, 247, 0.2);
+  background: transparent;
+  transition: all 0.25s ease;
+}
+
+/* Selected state */
+.answer.selected {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.08);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.15);
+}
+
+.answer.selected::before {
+  border-color: #ffd700;
+}
+
+/* Inner dot */
+.answer.selected::after {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffd700;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+}
+
+/* Hover */
+.answer:hover {
+  background: rgba(214, 203, 247, 0.04);
+  border-color: rgba(214, 203, 247, 0.12);
+  transform: translateX(5px);
+  color: #fff;
+}
+
+/* Navigation buttons */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.navigation button {
+  flex: 1;
+}
+
+#backBtn {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+#backBtn:hover:not(:disabled) {
+  background: rgba(214, 203, 247, 0.06);
+  border-color: rgba(214, 203, 247, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Premium Result Box Circle */
+.result-wheel-container {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  margin: 10px auto 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-wheel-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.wheel-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.03);
+  stroke-width: 8;
+}
+
+.wheel-progress {
+  fill: none;
+  stroke: url(#wheelGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2;
+  stroke-dashoffset: 251.2;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.wheel-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#wheelPercentage {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+}
+
+#wheelScoreLabel {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+#resultBox h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* Fade animation */
+.fade {
+  animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shake animation for validation errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.shake {
+  animation: shake 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+input.error {
+  border-color: #ff5e62 !important;
+  box-shadow: 0 0 12px rgba(255, 94, 98, 0.25) !important;
+}
+
+/* Footer & Links */
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.admin-link {
+  font-family: 'Outfit', sans-serif;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.admin-link:hover {
+  color: #d6cbf7;
+  background: rgba(214, 203, 247, 0.05);
+  border-color: rgba(214, 203, 247, 0.15);
+}
+
+/* Confetti canvas */
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Department Grid Styles */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 5px;
+}
+.dept-btn {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1.5px solid rgba(214, 203, 247, 0.12);
+  border-radius: 14px;
+  padding: 18px 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  box-shadow: none;
+  width: 100%;
+}
+.dept-btn:hover {
+  transform: translateY(-3px);
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.04);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.15);
+}
+.dept-icon {
+  font-size: 1.5rem;
+}
+.dept-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.dept-desc {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.12;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.35), 0 0 15px rgba(214, 203, 247, 0.2);
+  }
+  50% {
+    opacity: 0.38;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 35px rgba(255, 215, 0, 0.85), 0 0 50px rgba(214, 203, 247, 0.6);
+  }
+}
+
+/* Float name element style */
+.name-float {
+  pointer-events: none;
+  user-select: none;
+  animation: sparkle 3.2s infinite ease-in-out;
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- Confetti Canvas -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Animated Background Blobs -->
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<img id="velTechLogo" src="VelTech.png" style="display:none;" alt="Vel Tech Logo">
+
 <div class="container">
 
-<h1>Automated Quiz Engine</h1>
+<h1 class="main-title">Vel Tech University<br>Quiz Portal 🧑‍🎓</h1>
 
-<div id="startBox">
+<!-- DEPARTMENT SELECT BOX -->
+<div id="deptBox" class="card fade">
+  <p style="margin-bottom: 20px; color: rgba(214, 203, 247, 0.7); font-size: 0.95rem; font-weight: 500;">Select Your Department 🎓</p>
+  <div class="dept-grid">
+    <div class="dept-btn" onclick="selectDepartment('CSE')">
+      <span class="dept-icon">💻</span>
+      <span class="dept-name">CSE</span>
+      <span class="dept-desc">Computer Science</span>
+    </div>
+    <div class="dept-btn" onclick="selectDepartment('ECE')">
+      <span class="dept-icon">📡</span>
+      <span class="dept-name">ECE</span>
+      <span class="dept-desc">Electronics & Comm.</span>
+    </div>
+    <div class="dept-btn" onclick="selectDepartment('CIVIL')">
+      <span class="dept-icon">🏗️</span>
+      <span class="dept-name">CIVIL</span>
+      <span class="dept-desc">Civil Engineering</span>
+    </div>
+    <div class="dept-btn" onclick="selectDepartment('MECH')">
+      <span class="dept-icon">⚙️</span>
+      <span class="dept-name">MECH</span>
+      <span class="dept-desc">Mechanical Eng.</span>
+    </div>
+    <div class="dept-btn" onclick="selectDepartment('BIO TECH')">
+      <span class="dept-icon">🧬</span>
+      <span class="dept-name">BIO TECH</span>
+      <span class="dept-desc">Biotechnology</span>
+    </div>
+    <div class="dept-btn" onclick="selectDepartment('EEE')">
+      <span class="dept-icon">⚡</span>
+      <span class="dept-name">EEE</span>
+      <span class="dept-desc">Electrical & Elect.</span>
+    </div>
+  </div>
+</div>
 
+<!-- START BOX -->
+<div id="startBox" class="card fade" style="display:none">
+  
+  <!-- Interactive Tech Illustration (Lavender-Gold) -->
+  <div class="svg-illustration">
+    <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer code window container -->
+      <rect x="25" y="15" width="150" height="90" rx="12" fill="rgba(22, 14, 38, 0.8)" stroke="rgba(214, 203, 247, 0.25)" stroke-width="1.5" />
+      
+      <!-- Top window dots (Zen shades) -->
+      <circle cx="42" cy="27" r="3" fill="#8a2be2" />
+      <circle cx="52" cy="27" r="3" fill="#d6cbf7" />
+      <circle cx="62" cy="27" r="3" fill="#ffd700" />
+      
+      <!-- Inside Code Mock lines -->
+      <line x1="42" y1="46" x2="110" y2="46" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-linecap="round" />
+      <line x1="42" y1="58" x2="145" y2="58" stroke="#ffd700" stroke-width="3" stroke-linecap="round" />
+      <line x1="42" y1="70" x2="90" y2="70" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-linecap="round" />
+      <line x1="42" y1="82" x2="125" y2="82" stroke="#8a2be2" stroke-width="3" stroke-linecap="round" />
+      
+      <!-- Outer Floating Orbs / Icons -->
+      <g class="float-star">
+        <path d="M165,32 L166.5,35.5 L170,35.5 L167,37.5 L168.5,41 L165,39 L161.5,41 L163,37.5 L160,35.5 L163.5,35.5 Z" fill="#ffd700" opacity="0.85" />
+      </g>
+      <g class="float-circle">
+        <circle cx="168" cy="76" r="4.5" stroke="#ffffff" stroke-width="1.5" fill="none" />
+      </g>
+      <g class="float-triangle">
+        <polygon points="15,64 19,57 23,64" stroke="#8a2be2" stroke-width="1.5" fill="none" />
+      </g>
+    </svg>
+  </div>
 
-<input type="text" id="username" placeholder="Enter Your Name">
+  <!-- Floating input groups -->
+  <div class="input-group">
+    <input type="text" id="username" placeholder=" " required autocomplete="off">
+    <label for="username">Your Name</label>
+  </div>
+  
+  <div class="input-group">
+    <input type="text" id="VTUNo" placeholder=" " required autocomplete="off">
+    <label for="VTUNo">Your VTU No</label>
+  </div>
+  
+  <div class="input-group">
+    <input type="text" id="Slot" placeholder=" " required autocomplete="off">
+    <label for="Slot">Your Slot No</label>
+  </div>
+  
+  <div class="input-group">
+    <input type="text" id="Semester" value="WS2526" readonly placeholder=" ">
+    <label for="Semester">Semester</label>
+  </div>
 
-<input type="text" id="VTUNo"   placeholder="Enter Your Vtu ">
-
-<input type="text" id="Slot"    placeholder="Enter your Slot no">
-
-<input type="text" id="Semester" placeholder="WS2526" readonly>
-
-<br><br>
-
-<button onclick="startQuiz()">Start Quiz</button>
+  <button onclick="startQuiz()">Start Quiz</button>
 
 </div>
 
+<!-- QUIZ BOX -->
+<div id="quizBox" class="card fade" style="display:none">
 
-<div id="quizBox" style="display:none">
+  <div class="top">
+    <span id="questionNumber">Question 1 / 30</span>
+    
+    <!-- Circular countdown timer -->
+    <div id="timerContainer" class="timer-container">
+      <svg class="timer-svg" viewBox="0 0 36 36">
+        <path class="timer-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <path id="timerProgress" class="timer-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+      </svg>
+      <span id="timerText">30</span>
+    </div>
+  </div>
 
-<div class="top">
+  <div class="progress-container">
+    <div id="progressBar"></div>
+  </div>
 
-<span id="questionNumber"></span>
+  <!-- Transition Content Wrapper -->
+  <div id="quizContent" class="quiz-content-wrapper">
+    <h2 id="question"></h2>
+    <div id="answers" class="answers"></div>
+  </div>
 
-<span id="timer">30</span>
-
-</div>
-
-<div class="progress-container">
-<div id="progressBar"></div>
-</div>
-
-<h2 id="question"></h2>
-
-<div id="answers"></div>
-
-<div class="navigation">
-
-<button id="backBtn" onclick="previousQuestion()">⬅ Back</button>
-
-<button id="nextBtn" onclick="nextQuestion()">Next ➡</button>
-
-</div>
-
-</div>
-
-
-<div id="resultBox" style="display:none">
-
-<h2>Quiz Completed 🎉</h2>
-
-<p id="score"></p>
-
-<button onclick="downloadCertificate()">Download Certificate</button>
+  <div class="navigation">
+    <button id="backBtn" onclick="previousQuestion()">⬅ Back</button>
+    <button id="nextBtn" onclick="nextQuestion()">Next ➡</button>
+  </div>
 
 </div>
 
+<!-- RESULT BOX -->
+<div id="resultBox" class="card fade" style="display:none">
+
+  <h2>Quiz Completed 🎉</h2>
+  
+  <!-- Premium Score progress circle wheel -->
+  <div class="result-wheel-container">
+    <svg class="result-wheel-svg" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="wheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d6cbf7" />
+          <stop offset="100%" stop-color="#ffd700" />
+        </linearGradient>
+      </defs>
+      <circle class="wheel-bg" cx="50" cy="50" r="40" />
+      <circle id="wheelProgress" class="wheel-progress" cx="50" cy="50" r="40" />
+    </svg>
+    <div class="wheel-text">
+      <span id="wheelPercentage">0%</span>
+      <span id="wheelScoreLabel">Score: 0/25</span>
+    </div>
+  </div>
+  
+  <!-- Legacy scoring text (kept hidden to satisfy legacy code checks if any) -->
+  <p id="score" style="display: none;"></p>
+
+  <button onclick="downloadCertificate()">Download Certificate</button>
+
 </div>
 
-<!-- FIREBASE CONNECTION -->
-<script type="module">
+</div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<div class="footer">
+  <a href="admin.html" class="admin-link">⚙️ Admin Portal</a>
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBLpGMD_7UUSQSncFuvmf88rgt0TFbeWyw",
-  authDomain: "quiz-engine-d36d9.firebaseapp.com",
-  projectId: "quiz-engine-d36d9",
-  storageBucket: "quiz-engine-d36d9.firebasestorage.app",
-  messagingSenderId: "909409022499",
-  appId: "1:909409022499:web:a527fb4b636035cfb83796"
-};
-
-const app = initializeApp(firebaseConfig);
-
-window.db = getFirestore(app);
-window.collection = collection;
-window.addDoc = addDoc;
-
-</script>
-
-<script src="script.js"></script>
+<!-- LOCAL BACKEND API -->
+<script src="script.js?v=5"></script>
 
 </body>
-
 </html>

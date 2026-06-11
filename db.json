@@ -1,0 +1,53 @@
+[
+  {
+    "id": "_1ab2cd3ef",
+    "name": "Alice Johnson",
+    "vtuNo": "VTU1001",
+    "department": "CSE",
+    "slot": "A1",
+    "semester": "WS2526",
+    "score": 24,
+    "total": 25,
+    "percentage": "96.0",
+    "status": "Completed",
+    "date": "04/06/2026, 18:05:00"
+  },
+  {
+    "id": "_4ef5gh6ij",
+    "name": "Bob Smith",
+    "vtuNo": "VTU1002",
+    "department": "ECE",
+    "slot": "B2",
+    "semester": "WS2526",
+    "score": 20,
+    "total": 25,
+    "percentage": "80.0",
+    "status": "Completed",
+    "date": "04/06/2026, 18:06:00"
+  },
+  {
+    "id": "_7kl8mn9op",
+    "name": "Charlie Brown",
+    "vtuNo": "VTU1003",
+    "department": "CIVIL",
+    "slot": "A1",
+    "semester": "WS2526",
+    "score": 12,
+    "total": 25,
+    "percentage": "48.0",
+    "status": "Completed",
+    "date": "04/06/2026, 18:07:00"
+  },
+  {
+    "id": "_ss1uxcfa9",
+    "name": "PAVAN BADUGU",
+    "vtuNo": "25595",
+    "slot": "Y1",
+    "semester": "WS2526",
+    "score": 11,
+    "total": 25,
+    "percentage": "44.0",
+    "status": "Completed",
+    "date": "6/4/2026, 6:33:42 PM"
+  }
+]
