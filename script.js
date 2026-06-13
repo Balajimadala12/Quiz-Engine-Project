@@ -631,99 +631,145 @@ if (!hasTemplate) {
   doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
 }
 
-// ===== Vel Tech Logo =====
-const logoImg = document.getElementById("velTechLogo");
-if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
-  try {
-    // If we have a template, place the logo slightly higher and smaller to avoid overlaying template graphics
-    const logoY = hasTemplate ? 14 : 18;
-    const logoW = hasTemplate ? 30 : 35;
-    const logoH = hasTemplate ? 17 : 20;
-    doc.addImage(logoImg, "PNG", 20, logoY, logoW, logoH);
-  } catch (err) {
-    console.error("Error drawing logo to PDF:", err);
+// ===== Certificate Elements Drawing =====
+if (hasTemplate) {
+  const center = pageWidth / 2;
+  const currentPercentage = (score / questions.length) * 100;
+
+  // ===== Vel Tech Logo & University Name (Top Left Header) =====
+  const logoImg = document.getElementById("velTechLogo");
+  if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
+    try {
+      doc.addImage(logoImg, "PNG", 20, 16, 33, 14);
+    } catch (err) {
+      console.error("Error drawing logo to PDF:", err);
+    }
   }
-}
 
-// Center point for left text depends on layout
-const leftCenter = hasTemplate ? 100 : pageWidth / 2;
+  // University Header text
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(9);
+  doc.setTextColor(80, 80, 80);
+  doc.text("VEL TECH UNIVERSITY", 20, 35);
+  doc.setFont("Helvetica", "Normal");
+  doc.setFontSize(7.5);
+  doc.text(schoolText, 20, 39);
 
-// ===== University Name =====
-doc.setFont("Times", "Bold");
-doc.setFontSize(hasTemplate ? 13 : 20);
-doc.setTextColor(hasTemplate ? 138 : 0, hasTemplate ? 43 : 0, hasTemplate ? 226 : 0); // Purple if template, black fallback
+  // ===== Certificate Titles =====
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(36);
+  doc.setTextColor(0, 0, 0);
+  doc.text("Certificate", center, 50, { align: "center" });
 
-doc.text(
-  "Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology",
-  leftCenter,
-  hasTemplate ? 16 : 40,
-  { align: "center" }
-);
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(12);
+  doc.text("O F   A C H I E V E M E N T", center, 59, { align: "center" });
 
-// ===== School (Changeable) =====
-doc.setFont("Times", "Normal");
-doc.setFontSize(hasTemplate ? 10 : 16);
-doc.setTextColor(hasTemplate ? 60 : 0, hasTemplate ? 60 : 0, hasTemplate ? 60 : 0);
+  // ===== Certify Text =====
+  doc.setFont("Helvetica", "Normal");
+  doc.setFontSize(11);
+  doc.setTextColor(80, 80, 80);
+  doc.text("This is to certify that", center, 84, { align: "center" });
 
-doc.text(
-  schoolText,
-  leftCenter,
-  hasTemplate ? 21 : 52,
-  { align: "center" }
-);
+  // ===== Student Name =====
+  doc.setFont("Times", "BoldItalic");
+  doc.setFontSize(28);
+  doc.setTextColor(100, 50, 160); // Elegant purple
+  doc.text(displayName.toUpperCase(), center, 100, { align: "center" });
 
-// ===== Department (Changeable) =====
-doc.text(
-  deptText,
-  leftCenter,
-  hasTemplate ? 26 : 60,
-  { align: "center" }
-);
+  // ===== VTU Number =====
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(11);
+  doc.setTextColor(80, 80, 80);
+  doc.text("VTU No: " + VTUNo, center, 108, { align: "center" });
 
-if (!hasTemplate) {
-  // ===== Legacy Certificate Title (drawn in template pre-printed) =====
+  // ===== Description =====
+  doc.setFont("Helvetica", "Normal");
+  doc.setFontSize(12);
+  doc.setTextColor(80, 80, 80);
+  doc.text("has successfully completed the", center, 126, { align: "center" });
+  
+  doc.setFont("Helvetica", "Bold");
+  doc.setTextColor(0, 0, 0);
+  doc.text(`${selectedSubject} Quiz Assessment`, center, 134, { align: "center" });
+
+  doc.setFont("Helvetica", "Normal");
+  doc.setTextColor(80, 80, 80);
+  doc.text("with an outstanding score of", center, 142, { align: "center" });
+
+  doc.setFont("Helvetica", "Bold");
+  doc.setTextColor(0, 0, 0);
+  doc.text(`${score} / ${questions.length} (${currentPercentage.toFixed(1)}%)`, center, 150, { align: "center" });
+
+  // ===== Bottom Signature =====
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.5);
+  doc.line(center - 30, 172, center + 30, 172);
+
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(11);
+  doc.setTextColor(100, 50, 160); // Elegant purple
+  doc.text("Dr. S. Hemamalini", center, 177, { align: "center" });
+
+  doc.setFont("Helvetica", "Normal");
+  doc.setFontSize(9);
+  doc.setTextColor(100, 100, 100);
+  doc.text("Quiz Administrator", center, 182, { align: "center" });
+
+  doc.setFontSize(8.5);
+  doc.text("Date of Issue: " + new Date().toLocaleDateString(), center, 192, { align: "center" });
+
+} else {
+  // ===== Fallback Manual / Plain PDF Layout (No Template) =====
+  const leftCenter = pageWidth / 2;
+
+  const logoImg = document.getElementById("velTechLogo");
+  if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
+    try {
+      doc.addImage(logoImg, "PNG", 20, 18, 35, 20);
+    } catch (err) {
+      console.error("Error drawing logo to PDF:", err);
+    }
+  }
+
+  doc.setFont("Times", "Bold");
+  doc.setFontSize(20);
+  doc.setTextColor(0, 0, 0);
+  doc.text(
+    "Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology",
+    leftCenter,
+    40,
+    { align: "center" }
+  );
+
+  doc.setFont("Times", "Normal");
+  doc.setFontSize(16);
+  doc.setTextColor(0, 0, 0);
+  doc.text(schoolText, leftCenter, 52, { align: "center" });
+  doc.text(deptText, leftCenter, 60, { align: "center" });
+
   doc.setFont("Times", "Bold");
   doc.setFontSize(30);
   doc.text("CERTIFICATE OF ACHIEVEMENT", leftCenter, 78, { align: "center" });
 
-  // ===== Legacy Presented Text =====
   doc.setFont("Times", "Normal");
   doc.setFontSize(16);
   doc.text("This certificate is proudly presented to", leftCenter, 92, { align: "center" });
-}
 
-// ===== Student Name =====
-doc.setFont("Times", "Bold");
-doc.setFontSize(hasTemplate ? 28 : 32);
-doc.setTextColor(hasTemplate ? 139 : 0, 0, 0); // Dark Red if template, blue/black fallback
+  doc.setFont("Times", "Bold");
+  doc.setFontSize(32);
+  doc.setTextColor(0, 0, 0);
+  doc.text(displayName.toUpperCase(), leftCenter, 110, { align: "center" });
 
-doc.text(
-  displayName.toUpperCase(),
-  leftCenter,
-  hasTemplate ? 107 : 110,
-  { align: "center" }
-);
+  doc.setFont("Times", "Normal");
+  doc.setFontSize(16);
+  doc.text("VTU No: " + VTUNo, leftCenter, 124, { align: "center" });
 
-// ===== VTU Number =====
-doc.setFont("Times", "Normal");
-doc.setTextColor(0, 0, 0);
-doc.setFontSize(hasTemplate ? 13 : 16);
-
-doc.text(
-  "VTU No: " + VTUNo,
-  leftCenter,
-  hasTemplate ? 116 : 124,
-  { align: "center" }
-);
-
-if (!hasTemplate) {
-  // ===== Legacy Description & Score in center =====
   doc.text("For successfully completing the " + quizTitleText, leftCenter, 142, { align: "center" });
   doc.setFontSize(14);
   doc.text("Score: " + score + " / " + questions.length, leftCenter, 158, { align: "center" });
   doc.text("Date: " + new Date().toLocaleDateString(), leftCenter, 170, { align: "center" });
 
-  // ===== Legacy Signature Line & Signatory details =====
   doc.line(pageWidth - 90, 170, pageWidth - 30, 170);
   doc.setFont("Times", "Italic");
   doc.setFontSize(18);
@@ -733,30 +779,6 @@ if (!hasTemplate) {
   doc.text("M.E., Ph.D", pageWidth - 60, 178, { align: "center" });
   doc.text("Assistant Professor - Senior Grade", pageWidth - 60, 186, { align: "center" });
   doc.text("Authorized Signatory", pageWidth - 60, 194, { align: "center" });
-} else {
-  // ===== Write Right Resume Panel values =====
-  const currentPercentage = (score / questions.length) * 100;
-  
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(10);
-  doc.setTextColor(0, 0, 0);
-
-  // Values inside template slots on the right (Quiz Title, Date, Score, Percentage, Rank, Duration)
-  // Support small font sizes for long subject names
-  const subjectFontSize = selectedSubject.length > 20 ? 8 : 10;
-  doc.setFontSize(subjectFontSize);
-  doc.text(selectedSubject, 218, 68);
-  
-  doc.setFontSize(10);
-  doc.text(new Date().toLocaleDateString(), 218, 86);
-  doc.text(`${score} / ${questions.length}`, 218, 103);
-  doc.text(`${currentPercentage.toFixed(1)}%`, 218, 120);
-  doc.text(window.quizRankText || "Top 50%", 218, 137);
-  doc.text(quizDurationText, 218, 155);
-
-  // ===== Write Bottom Date of Issue above label =====
-  doc.setFontSize(10);
-  doc.text(new Date().toLocaleDateString(), 165, 173, { align: "center" });
 }
 
 // ===== Save PDF =====
