@@ -143,5 +143,47 @@
     "percentage": "40.0",
     "status": "Completed",
     "date": "12/6/2026, 1:05:40 am"
+  },
+  {
+    "id": "_0k95tvrqm",
+    "name": "POORNA",
+    "vtuNo": "26121",
+    "slot": "E1",
+    "semester": "WS2526",
+    "department": "CSE",
+    "subject": "SQL",
+    "score": 4,
+    "total": 5,
+    "percentage": "80.0",
+    "status": "Completed",
+    "date": "12/6/2026, 9:55:20 am"
+  },
+  {
+    "id": "_u83c9numg",
+    "name": "ADI",
+    "vtuNo": "26080",
+    "slot": "4E",
+    "semester": "WS2526",
+    "department": "CSE",
+    "subject": "Fundamentals of Computer Networks (FCN)",
+    "score": 2,
+    "total": 5,
+    "percentage": "40.0",
+    "status": "Completed",
+    "date": "12/6/2026, 10:50:21 am"
+  },
+  {
+    "id": "_wj5xqmvmk",
+    "name": "mohith",
+    "vtuNo": "26456",
+    "slot": "e1",
+    "semester": "WS2526",
+    "department": "CSE",
+    "subject": "Fundamentals of Computer Networks (FCN)",
+    "score": 0,
+    "total": 25,
+    "percentage": "0.0",
+    "status": "In Progress",
+    "date": "13/6/2026, 11:50:09 am"
   }
 ]
