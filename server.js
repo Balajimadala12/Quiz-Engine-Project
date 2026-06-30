@@ -10,12 +10,24 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   next();
 });
+
+const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || "admin123";
+const adminToken = '_' + Math.random().toString(36).substr(2, 9);
+
+function requireAdmin(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  if (authHeader === `Bearer ${adminToken}`) {
+    next();
+  } else {
+    res.status(403).json({ error: "Forbidden: Unauthorized administrative access" });
+  }
+}
 
 app.use(express.static(__dirname));
 
@@ -56,6 +68,15 @@ function writeQuestions(data) {
   fs.writeFileSync(QUESTIONS_FILE, JSON.stringify(data, null, 2));
 }
 
+// POST admin passcode login
+app.post('/api/admin/login', (req, res) => {
+  if (req.body && req.body.passcode === ADMIN_PASSCODE) {
+    res.json({ success: true, token: adminToken });
+  } else {
+    res.status(401).json({ error: "Invalid passcode" });
+  }
+});
+
 // GET all results
 app.get('/api/results', (req, res) => {
   res.json(readDb());
@@ -67,7 +88,7 @@ app.get('/api/questions', (req, res) => {
 });
 
 // POST save entire questions bank
-app.post('/api/questions', (req, res) => {
+app.post('/api/questions', requireAdmin, (req, res) => {
   try {
     writeQuestions(req.body);
     res.json({ success: true });
@@ -118,7 +139,7 @@ app.put('/api/results/:id', (req, res) => {
 });
 
 // DELETE result
-app.delete('/api/results/:id', (req, res) => {
+app.delete('/api/results/:id', requireAdmin, (req, res) => {
   let db = readDb();
   db = db.filter(r => r.id !== req.params.id);
   writeDb(db);

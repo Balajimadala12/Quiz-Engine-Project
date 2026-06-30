@@ -17,6 +17,7 @@ let userAnswers = [];
 let currentDocId = "";
 let quizStartTime = 0;
 let quizDurationText = "0m 0s";
+let isQuizActive = false;
 
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? (window.location.port === '8080' ? '' : 'http://localhost:8080')
@@ -201,7 +202,12 @@ function selectSubject(subjectName) {
   selectedSubject = subjectName;
   
   // Set questions for this specific subject
-  questions = questionBank[selectedDept][selectedSubject] || [];
+  const loadedQuestions = (questionBank[selectedDept] && questionBank[selectedDept][selectedSubject]) || [];
+  if (loadedQuestions.length === 0) {
+    alert("This subject does not have any questions yet. Please select another subject.");
+    return;
+  }
+  questions = loadedQuestions;
   userAnswers = new Array(questions.length).fill(null);
   
   const subjectBox = document.getElementById("subjectBox");
@@ -263,10 +269,21 @@ card.classList.add("shake");
 return;
 }
 
+if (questions.length === 0) {
+  alert("This subject does not have any questions. Please select another subject.");
+  return;
+}
+
 userName = nameInput.value.trim();
-VTUNo = vtuInput.value.trim();
-slotNo = slotInput.value.trim();
+VTUNo = vtuInput.value.trim().toUpperCase();
+slotNo = slotInput.value.trim().toUpperCase();
 semester = document.getElementById("Semester").value.trim();
+
+const startBtn = document.getElementById("startQuizBtn");
+if (startBtn) {
+  startBtn.disabled = true;
+  startBtn.innerText = "Loading...";
+}
 
 quizStartTime = Date.now();
 
@@ -274,30 +291,44 @@ quizStartTime = Date.now();
 startFloatingNameEffect(userName);
 
 // Automatically save user details in progress
+const startPayload = {
+  name: userName,
+  vtuNo: VTUNo,
+  slot: slotNo,
+  semester: semester,
+  department: selectedDept,
+  subject: selectedSubject,
+  score: 0,
+  total: questions.length,
+  percentage: "0.0",
+  status: "In Progress",
+  date: new Date().toLocaleString()
+};
+
 try {
   const response = await fetch(`${API_BASE}/api/results`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name: userName,
-      vtuNo: VTUNo,
-      slot: slotNo,
-      semester: semester,
-      department: selectedDept,
-      subject: selectedSubject,
-      score: 0,
-      total: questions.length,
-      percentage: "0.0",
-      status: "In Progress",
-      date: new Date().toLocaleString()
-    })
+    body: JSON.stringify(startPayload)
   });
-  const data = await response.json();
-  currentDocId = data.id;
+  if (response.ok) {
+    const data = await response.json();
+    currentDocId = data.id;
+  } else {
+    throw new Error("Server status: " + response.status);
+  }
 } catch (e) {
-  console.error("Error auto-saving user details:", e);
+  console.error("Error auto-saving user details, caching offline:", e);
+  currentDocId = 'local_' + Math.random().toString(36).substr(2, 9);
+  cacheResultOffline(currentDocId, startPayload);
+} finally {
+  if (startBtn) {
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Quiz";
+  }
 }
 
+isQuizActive = true;
 document.getElementById("startBox").style.display="none";
 document.getElementById("quizBox").style.display="block";
 
@@ -334,11 +365,11 @@ if(progressPath && timerText) {
   timerText.innerText = timeLeft;
   
   if (timeLeft > 10) {
-    progressPath.style.stroke = "#ffffff"; // pure white
+    progressPath.style.stroke = "#efe8db"; // soft linen
   } else if (timeLeft > 4) {
-    progressPath.style.stroke = "#d6cbf7"; // lavender
+    progressPath.style.stroke = "#e0a96d"; // warm sand
   } else {
-    progressPath.style.stroke = "#ffd700"; // gold warning
+    progressPath.style.stroke = "#d07a4a"; // terracotta warning
   }
 }
 
@@ -367,7 +398,7 @@ if(userAnswers[currentQuestion] === index){
 div.classList.add("selected");
 }
 
-div.innerHTML = answer;
+div.textContent = answer;
 
 div.onclick = () => selectAnswer(index);
 
@@ -406,6 +437,7 @@ quizBox.classList.add("shake");
 return;
 }
 
+clearInterval(timer);
 currentQuestion++;
 
 if(currentQuestion < questions.length){
@@ -420,7 +452,6 @@ if(currentQuestion < questions.length){
     }, 250);
   }, 250);
 }else{
-  clearInterval(timer);
   document.getElementById("quizBox").style.display="none";
   document.getElementById("resultBox").style.display="block";
   calculateScore();
@@ -431,6 +462,7 @@ if(currentQuestion < questions.length){
 /* PREVIOUS WITH TRANSITION */
 function previousQuestion(){
 if(currentQuestion > 0){
+  clearInterval(timer);
   currentQuestion--;
   const quizContent = document.getElementById("quizContent");
   quizContent.classList.add("slide-out");
@@ -448,6 +480,7 @@ if(currentQuestion > 0){
 /* SCORE */
 async function calculateScore(){
 
+isQuizActive = false;
 score = 0;
 
 userAnswers.forEach((ans,i)=>{
@@ -461,7 +494,8 @@ let percentage = (score/questions.length)*100;
 // Compute duration
 const durationMs = Date.now() - quizStartTime;
 const mins = Math.floor(durationMs / 60000);
-quizDurationText = mins > 0 ? `${mins} Minute${mins !== 1 ? 's' : ''}` : `1 Minute`;
+const secs = Math.floor((durationMs % 60000) / 1000);
+quizDurationText = `${mins}m ${secs}s`;
 
 // Calculate rank dynamically
 let rankText = "Top 50%";
@@ -469,7 +503,7 @@ try {
   const response = await fetch(`${API_BASE}/api/results`);
   if (response.ok) {
     const results = await response.json();
-    const completedResults = results.filter(r => r.department === selectedDept && r.status === "Completed");
+    const completedResults = results.filter(r => r.department === selectedDept && r.subject === selectedSubject && r.status === "Completed");
     const scores = completedResults.map(r => Number(r.score));
     scores.push(score); // include current score
     const lowerScores = scores.filter(s => s < score).length;
@@ -503,16 +537,16 @@ if (circle && percentageText && scoreLabel) {
   const circumference = 251.2;
   const offset = circumference - (percentage / 100) * circumference;
   
-  // Set stroke gradient coloring based on pass/fail (using Lavender to Goldish)
+  // Set stroke gradient coloring based on pass/fail (using Cozy Neutrals)
   const gradientStop1 = document.querySelector("#wheelGradient stop:nth-child(1)");
   const gradientStop2 = document.querySelector("#wheelGradient stop:nth-child(2)");
   if (gradientStop1 && gradientStop2) {
     if (percentage >= 50) {
-      gradientStop1.setAttribute("stop-color", "#d6cbf7");
-      gradientStop2.setAttribute("stop-color", "#ffd700");
+      gradientStop1.setAttribute("stop-color", "#efe8db");
+      gradientStop2.setAttribute("stop-color", "#e0a96d");
     } else {
-      gradientStop1.setAttribute("stop-color", "#8a2be2");
-      gradientStop2.setAttribute("stop-color", "#15092a");
+      gradientStop1.setAttribute("stop-color", "#d07a4a");
+      gradientStop2.setAttribute("stop-color", "#26201c");
     }
   }
   
@@ -550,239 +584,193 @@ if (percentage >= 50) {
 }
 
 /* local API */
+const fullCompletedPayload = {
+  name: userName,
+  vtuNo: VTUNo,
+  slot: slotNo,
+  semester: semester,
+  department: selectedDept,
+  subject: selectedSubject,
+  score: score,
+  total: questions.length,
+  percentage: percentage.toFixed(1),
+  status: "Completed",
+  date: new Date().toLocaleString()
+};
+
 try{
-  if (currentDocId) {
-    await fetch(`${API_BASE}/api/results/${currentDocId}`, {
+  if (currentDocId && !currentDocId.startsWith("local_")) {
+    const response = await fetch(`${API_BASE}/api/results/${currentDocId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         score: score,
         percentage: percentage.toFixed(1),
-        date: new Date().toLocaleString()
+        date: fullCompletedPayload.date
       })
     });
+    if (!response.ok) {
+      throw new Error("Server status: " + response.status);
+    }
   } else {
-    await fetch(`${API_BASE}/api/results`, {
+    const response = await fetch(`${API_BASE}/api/results`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: userName,
-        vtuNo: VTUNo,
-        slot: slotNo,
-        semester: semester,
-        department: selectedDept,
-        subject: selectedSubject,
-        score: score,
-        total: questions.length,
-        percentage: percentage.toFixed(1),
-        status: "Completed",
-        date: new Date().toLocaleString()
-      })
+      body: JSON.stringify(fullCompletedPayload)
     });
+    if (response.ok) {
+      if (currentDocId && currentDocId.startsWith("local_")) {
+        removeOfflineResult(currentDocId);
+      }
+    } else {
+      throw new Error("Server status: " + response.status);
+    }
   }
 }catch(e){
-  console.error("Local API Save Error:", e);
+  console.error("Local API Save Error, caching completion offline:", e);
+  cacheResultOffline(currentDocId, fullCompletedPayload, true);
 }
+
+// Trigger sync for any cached records
+syncOfflineResults();
 }
 
 /* CHANGEABLE CERTIFICATE GENERATION */
 function downloadCertificate(){
 
-const { jsPDF } = window.jspdf;
-
-const doc = new jsPDF("landscape");
-
-const pageWidth = doc.internal.pageSize.width;
-const pageHeight = doc.internal.pageSize.height;
-
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
-const displayName = toTitleCase(userName);
-
-// Fetch dynamic, changeable text fields based on student department
-const schoolText = schoolNames[selectedDept] || "School of Computing";
-const deptText = deptNames[selectedDept] || "Department of Computer Science and Engineering";
-const quizTitleText = `${selectedSubject} Quiz Assessment`;
-
-// ===== Certificate Background / Template =====
-const templateImg = document.getElementById("certificateTemplate");
-let hasTemplate = false;
-
-if (templateImg && templateImg.complete && templateImg.naturalWidth !== 0) {
-  try {
-    doc.addImage(templateImg, "PNG", 0, 0, pageWidth, pageHeight);
-    hasTemplate = true;
-  } catch (err) {
-    console.error("Error drawing template to PDF:", err);
-  }
-}
-
-// Fallback to manual border if no template is loaded
-if (!hasTemplate) {
-  doc.setDrawColor(0, 102, 204);
-  doc.setLineWidth(4);
-  doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("landscape");
   
-  doc.setLineWidth(1);
-  doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
-}
-
-// ===== Certificate Elements Drawing =====
-if (hasTemplate) {
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
   const center = pageWidth / 2;
   const currentPercentage = (score / questions.length) * 100;
 
-  // ===== Vel Tech Logo & University Name (Top Left Header) =====
-  const logoImg = document.getElementById("velTechLogo");
-  if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
-    try {
-      doc.addImage(logoImg, "PNG", 20, 16, 33, 14);
-    } catch (err) {
-      console.error("Error drawing logo to PDF:", err);
-    }
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
   }
-
-  // University Header text
-  doc.setFont("Helvetica", "Bold");
-  doc.setFontSize(9);
-  doc.setTextColor(80, 80, 80);
-  doc.text("VEL TECH UNIVERSITY", 20, 35);
-  doc.setFont("Helvetica", "Normal");
-  doc.setFontSize(7.5);
-  doc.text(schoolText, 20, 39);
-
-  // ===== Certificate Titles =====
-  doc.setFont("Helvetica", "Bold");
-  doc.setFontSize(36);
-  doc.setTextColor(0, 0, 0);
-  doc.text("Certificate", center, 50, { align: "center" });
-
-  doc.setFont("Helvetica", "Bold");
-  doc.setFontSize(12);
-  doc.text("O F   A C H I E V E M E N T", center, 59, { align: "center" });
-
-  // ===== Certify Text =====
-  doc.setFont("Helvetica", "Normal");
-  doc.setFontSize(11);
-  doc.setTextColor(80, 80, 80);
-  doc.text("This is to certify that", center, 84, { align: "center" });
-
-  // ===== Student Name =====
-  doc.setFont("Times", "BoldItalic");
-  doc.setFontSize(28);
-  doc.setTextColor(100, 50, 160); // Elegant purple
-  doc.text(displayName.toUpperCase(), center, 100, { align: "center" });
-
-  // ===== VTU Number =====
-  doc.setFont("Helvetica", "Bold");
-  doc.setFontSize(11);
-  doc.setTextColor(80, 80, 80);
-  doc.text("VTU No: " + VTUNo, center, 108, { align: "center" });
-
-  // ===== Description =====
-  doc.setFont("Helvetica", "Normal");
-  doc.setFontSize(12);
-  doc.setTextColor(80, 80, 80);
-  doc.text("has successfully completed the", center, 126, { align: "center" });
   
-  doc.setFont("Helvetica", "Bold");
-  doc.setTextColor(0, 0, 0);
-  doc.text(`${selectedSubject} Quiz Assessment`, center, 134, { align: "center" });
+  const displayName = toTitleCase(userName);
+  const schoolText = schoolNames[selectedDept] || "School of Computing";
+  const deptText = deptNames[selectedDept] || "Department of Computer Science and Engineering";
+  
+  // 1. Draw elegant solid background color (Cream/Off-White)
+  doc.setFillColor(252, 251, 247); // #fcfbf7
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  doc.setFont("Helvetica", "Normal");
-  doc.setTextColor(80, 80, 80);
-  doc.text("with an outstanding score of", center, 142, { align: "center" });
+  // 2. Draw outer gold borders
+  doc.setDrawColor(197, 160, 89); // Elegant Gold
+  doc.setLineWidth(1.5);
+  doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
 
-  doc.setFont("Helvetica", "Bold");
-  doc.setTextColor(0, 0, 0);
-  doc.text(`${score} / ${questions.length} (${currentPercentage.toFixed(1)}%)`, center, 150, { align: "center" });
-
-  // ===== Bottom Signature =====
-  doc.setDrawColor(200, 200, 200);
+  // 3. Draw inner navy borders
+  doc.setDrawColor(18, 30, 49); // Dark Navy
   doc.setLineWidth(0.5);
-  doc.line(center - 30, 172, center + 30, 172);
+  doc.rect(13, 13, pageWidth - 26, pageHeight - 26);
 
-  doc.setFont("Helvetica", "Bold");
-  doc.setFontSize(11);
-  doc.setTextColor(100, 50, 160); // Elegant purple
-  doc.text("Dr. S. Hemamalini", center, 177, { align: "center" });
+  // 4. Draw corner decorations (Gold geometric corner brackets)
+  doc.setDrawColor(197, 160, 89);
+  doc.setLineWidth(1.5);
+  // Top Left Corner
+  doc.line(13, 20, 20, 20);
+  doc.line(20, 13, 20, 20);
+  // Top Right Corner
+  doc.line(pageWidth - 13, 20, pageWidth - 20, 20);
+  doc.line(pageWidth - 20, 13, pageWidth - 20, 20);
+  // Bottom Left Corner
+  doc.line(13, pageHeight - 20, 20, pageHeight - 20);
+  doc.line(20, pageHeight - 13, 20, pageHeight - 20);
+  // Bottom Right Corner
+  doc.line(pageWidth - 13, pageHeight - 20, pageWidth - 20, pageHeight - 20);
+  doc.line(pageWidth - 20, pageHeight - 13, pageWidth - 20, pageHeight - 20);
 
-  doc.setFont("Helvetica", "Normal");
-  doc.setFontSize(9);
-  doc.setTextColor(100, 100, 100);
-  doc.text("Quiz Administrator", center, 182, { align: "center" });
-
-  doc.setFontSize(8.5);
-  doc.text("Date of Issue: " + new Date().toLocaleDateString(), center, 192, { align: "center" });
-
-} else {
-  // ===== Fallback Manual / Plain PDF Layout (No Template) =====
-  const leftCenter = pageWidth / 2;
-
+  // 5. University Logo (Top Center)
   const logoImg = document.getElementById("velTechLogo");
   if (logoImg && logoImg.complete && logoImg.naturalWidth !== 0) {
     try {
-      doc.addImage(logoImg, "PNG", 20, 18, 35, 20);
+      doc.addImage(logoImg, "PNG", center - 20, 20, 40, 16);
     } catch (err) {
       console.error("Error drawing logo to PDF:", err);
     }
   }
 
+  // 6. University Header
   doc.setFont("Times", "Bold");
-  doc.setFontSize(20);
-  doc.setTextColor(0, 0, 0);
-  doc.text(
-    "Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology",
-    leftCenter,
-    40,
-    { align: "center" }
-  );
+  doc.setFontSize(11);
+  doc.setTextColor(18, 30, 49); // Dark Navy
+  doc.text("VEL TECH RANGARAJAN DR. SAGUNTHALA R&D INSTITUTE OF SCIENCE AND TECHNOLOGY", center, 44, { align: "center" });
+  
+  doc.setFont("Helvetica", "Normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(100, 100, 100);
+  doc.text(`${schoolText.toUpperCase()}  |  ${deptText.toUpperCase()}`, center, 50, { align: "center" });
 
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(16);
-  doc.setTextColor(0, 0, 0);
-  doc.text(schoolText, leftCenter, 52, { align: "center" });
-  doc.text(deptText, leftCenter, 60, { align: "center" });
+  // 7. Divider Line
+  doc.setDrawColor(197, 160, 89);
+  doc.setLineWidth(1.2);
+  doc.line(center - 70, 55, center + 70, 55);
 
+  // 8. Certificate Main Heading
   doc.setFont("Times", "Bold");
-  doc.setFontSize(30);
-  doc.text("CERTIFICATE OF ACHIEVEMENT", leftCenter, 78, { align: "center" });
+  doc.setFontSize(28);
+  doc.setTextColor(18, 30, 49);
+  doc.text("CERTIFICATE OF EXCELLENCE", center, 75, { align: "center" });
 
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(16);
-  doc.text("This certificate is proudly presented to", leftCenter, 92, { align: "center" });
-
-  doc.setFont("Times", "Bold");
-  doc.setFontSize(32);
-  doc.setTextColor(0, 0, 0);
-  doc.text(displayName.toUpperCase(), leftCenter, 110, { align: "center" });
-
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(16);
-  doc.text("VTU No: " + VTUNo, leftCenter, 124, { align: "center" });
-
-  doc.text("For successfully completing the " + quizTitleText, leftCenter, 142, { align: "center" });
-  doc.setFontSize(14);
-  doc.text("Score: " + score + " / " + questions.length, leftCenter, 158, { align: "center" });
-  doc.text("Date: " + new Date().toLocaleDateString(), leftCenter, 170, { align: "center" });
-
-  doc.line(pageWidth - 90, 170, pageWidth - 30, 170);
   doc.setFont("Times", "Italic");
-  doc.setFontSize(18);
-  doc.text("Dr. S. Hemamalini", pageWidth - 60, 165, { align: "center" });
-  doc.setFont("Times", "Normal");
-  doc.setFontSize(12);
-  doc.text("M.E., Ph.D", pageWidth - 60, 178, { align: "center" });
-  doc.text("Assistant Professor - Senior Grade", pageWidth - 60, 186, { align: "center" });
-  doc.text("Authorized Signatory", pageWidth - 60, 194, { align: "center" });
-}
+  doc.setFontSize(11);
+  doc.setTextColor(120, 120, 120);
+  doc.text("This certificate is proudly presented to", center, 90, { align: "center" });
 
-// ===== Save PDF =====
-doc.save("Quiz-Certificate.pdf");
+  // 9. Student Name
+  doc.setFont("Times", "BoldItalic");
+  doc.setFontSize(30);
+  doc.setTextColor(197, 160, 89); // Gold
+  doc.text(displayName.toUpperCase(), center, 108, { align: "center" });
+
+  // Thin underline under name
+  doc.setDrawColor(197, 160, 89);
+  doc.setLineWidth(0.8);
+  doc.line(center - 50, 113, center + 50, 113);
+
+  // 10. VTU Registration
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(10);
+  doc.setTextColor(100, 100, 100);
+  doc.text("VTU Registration No: " + VTUNo, center, 122, { align: "center" });
+
+  // 11. Accomplishment Description
+  doc.setFont("Times", "Italic");
+  doc.setFontSize(12);
+  doc.setTextColor(80, 80, 80);
+  doc.text("for successfully completing the academic assessment course in", center, 138, { align: "center" });
+
+  // Course Name
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(15);
+  doc.setTextColor(18, 30, 49); // Dark Navy
+  doc.text(selectedSubject.toUpperCase(), center, 148, { align: "center" });
+
+  // Score
+  doc.setFont("Times", "Italic");
+  doc.setFontSize(12);
+  doc.setTextColor(80, 80, 80);
+  doc.text("and demonstrating outstanding proficiency with a final score of", center, 158, { align: "center" });
+
+  doc.setFont("Helvetica", "Bold");
+  doc.setFontSize(13);
+  doc.setTextColor(18, 30, 49);
+  doc.text(`${score} / ${questions.length} (${currentPercentage.toFixed(1)}%)`, center, 168, { align: "center" });
+
+  // 12. Date of Issue (Bottom Center)
+  doc.setFont("Times", "Italic");
+  doc.setFontSize(10);
+  doc.setTextColor(120, 120, 120);
+  doc.text("Date of Issue: " + new Date().toLocaleDateString(), center, 188, { align: "center" });
+
+  // ===== Save PDF =====
+  doc.save("Quiz-Certificate.pdf");
 
 }
 
@@ -914,6 +902,7 @@ function startFloatingNameEffect(name) {
     bgContainer.appendChild(el);
     
     function animateFloat() {
+      if (!document.body.contains(el)) return;
       x += dx;
       y += dy;
       rotation += rotSpeed;
@@ -945,3 +934,103 @@ window.nextQuestion = nextQuestion;
 window.previousQuestion = previousQuestion;
 window.selectAnswer = selectAnswer;
 window.downloadCertificate = downloadCertificate;
+
+// Caching and auto-sync functions for offline database submissions
+function cacheResultOffline(id, record, isUpdate = false) {
+  try {
+    let cached = JSON.parse(localStorage.getItem("unsyncedQuizResults") || "[]");
+    if (isUpdate) {
+      const idx = cached.findIndex(r => r.id === id);
+      if (idx !== -1) {
+        cached[idx] = { ...cached[idx], ...record, status: "Completed" };
+      } else {
+        cached.push({ id, ...record, status: "Completed" });
+      }
+    } else {
+      cached.push({ id, ...record });
+    }
+    localStorage.setItem("unsyncedQuizResults", JSON.stringify(cached));
+  } catch (e) {
+    console.error("Failed to cache results offline:", e);
+  }
+}
+
+function removeOfflineResult(id) {
+  try {
+    let cached = JSON.parse(localStorage.getItem("unsyncedQuizResults") || "[]");
+    cached = cached.filter(r => r.id !== id);
+    if (cached.length === 0) {
+      localStorage.removeItem("unsyncedQuizResults");
+    } else {
+      localStorage.setItem("unsyncedQuizResults", JSON.stringify(cached));
+    }
+  } catch (e) {
+    console.error("Failed to remove offline record from cache:", e);
+  }
+}
+
+async function syncOfflineResults() {
+  let cached = [];
+  try {
+    cached = JSON.parse(localStorage.getItem("unsyncedQuizResults") || "[]");
+  } catch (e) {
+    return;
+  }
+  if (cached.length === 0) return;
+
+  console.log(`Auto-sync: Attempting to upload ${cached.length} offline results...`);
+  let stillUnsynced = [];
+
+  for (let record of cached) {
+    try {
+      if (record.id.startsWith("local_")) {
+        const postPayload = { ...record };
+        delete postPayload.id;
+        const response = await fetch(`${API_BASE}/api/results`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(postPayload)
+        });
+        if (response.ok) {
+          console.log(`Auto-sync successfully uploaded result for ${record.name}`);
+          continue;
+        }
+      } else {
+        const response = await fetch(`${API_BASE}/api/results/${record.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            score: record.score,
+            percentage: record.percentage,
+            date: record.date
+          })
+        });
+        if (response.ok) {
+          console.log(`Auto-sync successfully updated results for server ID ${record.id}`);
+          continue;
+        }
+      }
+    } catch (err) {
+      console.warn("Auto-sync: failed to process record: ", err);
+    }
+    stillUnsynced.push(record);
+  }
+
+  if (stillUnsynced.length === 0) {
+    localStorage.removeItem("unsyncedQuizResults");
+  } else {
+    localStorage.setItem("unsyncedQuizResults", JSON.stringify(stillUnsynced));
+  }
+}
+
+// Trigger auto-sync on load, and when browser returns online
+syncOfflineResults();
+window.addEventListener("online", syncOfflineResults);
+
+// Warn user before reloading or leaving the page during an active quiz
+window.addEventListener("beforeunload", (e) => {
+  if (isQuizActive) {
+    e.preventDefault();
+    e.returnValue = "Are you sure you want to leave? Your quiz progress will be lost.";
+  }
+});

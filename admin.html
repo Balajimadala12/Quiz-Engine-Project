@@ -35,7 +35,7 @@ window.onerror = function(message, source, lineno, colno, error) {
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background: radial-gradient(circle at 50% 50%, #171825 0%, #08090d 100%);
+    background: radial-gradient(circle at 50% 50%, #1a1512 0%, #0c0a09 100%);
     color: #f3f4f6;
     text-align: center;
     padding: 40px 20px;
@@ -51,7 +51,7 @@ body::before, body::after {
   width: 400px;
   height: 400px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0) 70%);
+  background: radial-gradient(circle, rgba(224, 169, 109, 0.08) 0%, rgba(224, 169, 109, 0) 70%);
   z-index: -1;
   pointer-events: none;
 }
@@ -71,7 +71,7 @@ h1 {
     font-weight: 700;
     margin-top: 20px;
     margin-bottom: 40px;
-    background: linear-gradient(135deg, #ffffff 40%, #e5c158 100%);
+    background: linear-gradient(135deg, #ffffff 40%, #e0a96d 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
@@ -82,10 +82,10 @@ h1::after {
   display: block;
   width: 60px;
   height: 3px;
-  background: #d4af37;
+  background: #e0a96d;
   border-radius: 2px;
   margin: 12px auto 0;
-  box-shadow: 0 0 10px rgba(212,175,55,0.5);
+  box-shadow: 0 0 10px rgba(224, 169, 109, 0.5);
 }
 
 /* Table container to handle responsiveness */
@@ -95,7 +95,7 @@ h1::after {
     margin: 0 auto;
     overflow-x: auto;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(239, 232, 219, 0.08);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -103,7 +103,7 @@ h1::after {
 table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(22, 24, 38, 0.7);
+    background: rgba(38, 32, 28, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     text-align: left;
@@ -111,21 +111,21 @@ table {
 
 /* Header */
 th {
-    background: linear-gradient(135deg, #23273e, #161827);
-    color: #e5c158;
+    background: linear-gradient(135deg, #302621, #1a1512);
+    color: #e0a96d;
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
     padding: 18px 20px;
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 1px;
-    border-bottom: 1.5px solid rgba(212, 175, 55, 0.3);
+    border-bottom: 1.5px solid rgba(224, 169, 109, 0.3);
 }
 
 /* Rows */
 td {
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(239, 232, 219, 0.05);
     vertical-align: middle;
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.8);
@@ -165,42 +165,42 @@ td:first-child {
 }
 
 .rank1 {
-    background: linear-gradient(135deg, #ffd700, #b8860b);
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+    background: linear-gradient(135deg, #e0a96d, #a3723b);
+    box-shadow: 0 0 12px rgba(224, 169, 109, 0.35);
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(224, 169, 109, 0.3);
 }
 
 .rank2 {
-    background: linear-gradient(135deg, #f1f5f9, #94a3b8);
-    box-shadow: 0 0 12px rgba(148, 163, 184, 0.3);
+    background: linear-gradient(135deg, #efe8db, #9e9382);
+    box-shadow: 0 0 12px rgba(158, 147, 130, 0.3);
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    color: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #26201c;
+    border: 1px solid rgba(239, 232, 219, 0.4);
 }
 
 .rank3 {
-    background: linear-gradient(135deg, #d97706, #78350f);
-    box-shadow: 0 0 12px rgba(217, 119, 6, 0.3);
+    background: linear-gradient(135deg, #d07a4a, #783e20);
+    box-shadow: 0 0 12px rgba(208, 122, 74, 0.3);
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    border: 1px solid rgba(217, 119, 6, 0.3);
+    border: 1px solid rgba(208, 122, 74, 0.3);
 }
 
 .badge.active {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    color: #10b981;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+    background: rgba(142, 155, 110, 0.15);
+    border: 1px solid rgba(142, 155, 110, 0.35);
+    color: #8e9b6e;
+    box-shadow: 0 0 10px rgba(142, 155, 110, 0.15);
 }
 
 .pulse-dot {
     display: inline-block;
     width: 8px;
     height: 8px;
-    background-color: #10b981;
+    background-color: #8e9b6e;
     border-radius: 50%;
     margin-left: 8px;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 0 rgba(142, 155, 110, 0.7);
     animation: pulse 1.2s infinite;
     vertical-align: middle;
 }
@@ -208,15 +208,15 @@ td:first-child {
 @keyframes pulse {
     0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        box-shadow: 0 0 0 0 rgba(142, 155, 110, 0.7);
     }
     70% {
         transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 6px rgba(142, 155, 110, 0);
     }
     100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 0 rgba(142, 155, 110, 0);
     }
 }
 
@@ -258,12 +258,12 @@ button:active {
 }
 
 .summary-card {
-    background: rgba(22, 24, 38, 0.7);
+    background: rgba(38, 32, 28, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 24px 20px;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(239, 232, 219, 0.08);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
@@ -271,7 +271,7 @@ button:active {
 .summary-card h3 {
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
-    color: #e5c158;
+    color: #e0a96d;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -296,10 +296,10 @@ button:active {
 
 .filter-row input, .filter-row select {
     padding: 12px 18px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(239, 232, 219, 0.1);
     border-radius: 12px;
     font-size: 14px;
-    background: rgba(22, 24, 38, 0.7);
+    background: rgba(38, 32, 28, 0.7);
     color: #fff;
     font-family: 'Plus Jakarta Sans', sans-serif;
     outline: none;
@@ -320,8 +320,8 @@ button:active {
 }
 
 .filter-row input:focus, .filter-row select:focus {
-    border-color: #e5c158;
-    box-shadow: 0 0 12px rgba(229, 193, 88, 0.25);
+    border-color: #e0a96d;
+    box-shadow: 0 0 12px rgba(224, 169, 109, 0.25);
 }
 
 @media (max-width: 768px) {
@@ -356,12 +356,12 @@ button:active {
 }
 
 .login-card {
-    background: rgba(22, 24, 38, 0.7);
+    background: rgba(38, 32, 28, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 40px 30px;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(239, 232, 219, 0.08);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
     max-width: 400px;
@@ -386,10 +386,10 @@ button:active {
 .login-card input {
     width: 100%;
     padding: 14px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(239, 232, 219, 0.1);
     border-radius: 12px;
     font-size: 16px;
-    background: rgba(15, 17, 26, 0.5);
+    background: rgba(26, 21, 18, 0.5);
     color: #fff;
     margin-bottom: 20px;
     outline: none;
@@ -400,15 +400,15 @@ button:active {
 }
 
 .login-card input:focus {
-    border-color: #e5c158;
-    box-shadow: 0 0 12px rgba(229, 193, 88, 0.25);
+    border-color: #e0a96d;
+    box-shadow: 0 0 12px rgba(224, 169, 109, 0.25);
 }
 
 .login-card button {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #ffd700, #b8860b);
-    color: #0f172a;
+    background: linear-gradient(135deg, #efe8db, #e0a96d);
+    color: #1a1512;
     border: none;
     border-radius: 12px;
     font-weight: 700;
@@ -420,7 +420,7 @@ button:active {
 }
 
 .login-card button:hover {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 15px rgba(224, 169, 109, 0.4);
     transform: translateY(-2px);
 }
 
@@ -451,10 +451,10 @@ button:active {
   transition: all 0.3s ease;
 }
 .header-btn:hover, .header-btn.active {
-  color: #e5c158;
-  background: rgba(229, 193, 88, 0.06);
-  border-color: rgba(229, 193, 88, 0.25);
-  box-shadow: 0 4px 12px rgba(229, 193, 88, 0.1);
+  color: #e0a96d;
+  background: rgba(224, 169, 109, 0.06);
+  border-color: rgba(224, 169, 109, 0.25);
+  box-shadow: 0 4px 12px rgba(224, 169, 109, 0.1);
 }
 </style>
 
@@ -542,9 +542,14 @@ const API_BASE = (window.location.hostname === 'localhost' || window.location.ho
 
 let allRecords = [];
 
-function setAuthorized(val) {
+function setAuthorized(val, token = "") {
   try {
     sessionStorage.setItem("isAdminAuthorized", val);
+    if (token) {
+      sessionStorage.setItem("adminToken", token);
+    } else {
+      sessionStorage.removeItem("adminToken");
+    }
   } catch (e) {
     console.warn("sessionStorage not accessible:", e);
   }
@@ -728,10 +733,10 @@ function filterLeaderboard() {
   const subjectVal = document.getElementById("subjectFilter").value;
 
   const filtered = allRecords.filter(r => {
-    const currentVtu = r.vtuNo || r.VTUNo || r.vtu || r.VTU || '';
-    const currentSlot = r.slot || r.Slot || r.slotNo || r.SlotNo || '';
-    const currentDept = r.department || r.Dept || r.dept || '';
-    const currentSubject = r.subject || r.Subject || '';
+    const currentVtu = r.vtuNo || r.VTUNo || r.vtu || r.VTU || 'N/A';
+    const currentSlot = r.slot || r.Slot || r.slotNo || r.SlotNo || 'N/A';
+    const currentDept = r.department || r.Dept || r.dept || 'N/A';
+    const currentSubject = r.subject || r.Subject || 'N/A';
 
     const nameMatch = (r.name || "").toLowerCase().includes(searchVal);
     const vtuMatch = String(currentVtu).toLowerCase().includes(searchVal);
@@ -745,6 +750,7 @@ function filterLeaderboard() {
     return (nameMatch || vtuMatch || deptSearchMatch || subjectSearchMatch) && slotMatch && deptMatch && subjectMatch;
   });
 
+  updateStats(filtered);
   renderTable(filtered);
 }
 
@@ -752,29 +758,47 @@ function filterLeaderboard() {
 window.deleteRecord = async function(id){
   if(confirm("Are you sure you want to delete this participant record?")){
     try {
-      await fetch(`${API_BASE}/api/results/${id}`, {
-        method: 'DELETE'
+      const token = sessionStorage.getItem("adminToken") || "";
+      const response = await fetch(`${API_BASE}/api/results/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `Server status: ${response.status}`);
+      }
       alert("Record Deleted successfully!");
       // Reload details from DB without full page refresh
       loadLeaderboard();
     } catch(e) {
       console.error("Error deleting: ", e);
-      alert("Failed to delete record.");
+      alert("Failed to delete record: " + e.message);
     }
   }
 }
 
-const ADMIN_PASSCODE = "admin123";
-
-window.verifyPasscode = function() {
+window.verifyPasscode = async function() {
   const input = document.getElementById("passcodeInput").value.trim();
   const errorMsg = document.getElementById("loginError");
+  errorMsg.style.display = "none";
   
-  if (input === ADMIN_PASSCODE) {
-    setAuthorized("true");
-    showDashboard();
-  } else {
+  try {
+    const response = await fetch(`${API_BASE}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ passcode: input })
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      setAuthorized("true", data.token);
+      showDashboard();
+    } else {
+      throw new Error("Invalid passcode");
+    }
+  } catch (err) {
     errorMsg.style.display = "block";
     const loginCard = document.querySelector(".login-card");
     loginCard.classList.remove("shake");
